@@ -1,0 +1,7 @@
+stmt -> id := number | id := id |
+        if (cond) then stmt |
+        if (cond) then stmt else stmt
+expr -> id | number
+cond -> expr relop expr
+relop -> < | > | <= | >= | <> | =
+          
