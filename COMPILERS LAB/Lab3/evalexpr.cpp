@@ -19,6 +19,8 @@ struct In
     string token;
     int tokenid;
 };
+
+
 In Input[MAX];
 int insize;
 
@@ -68,15 +70,6 @@ void printNumtable()
     cout << '\n';
 }
 
-struct Tree
-{
-    string opr;
-    int val = 0;
-    Tree *left;
-    Tree *right;
-    int depth;
-};
-
 int idindex(string s)
 {
     for (int i = 0; i < idsize; i++)
@@ -101,70 +94,74 @@ int numindex(int s)
     return -1;
 }
 
-Tree *MakeTree(int l, int r, int depth)
+
+class Tree
 {
-    if (l > r)
-        return NULL;
-    if (l == r)
+public:
+    string opr;
+    int val;
+    Tree *left;
+    Tree *right;
+    int depth;
+
+    Tree(string opr, int depth, int val = 0)
     {
-        Tree *root = (Tree *)malloc(sizeof(Tree));
-        string temp = Input[l].token;
-        if ((temp[0] >= '0' && temp[0] <= '9') || temp[0] == '-')
-        {
-            root->opr = "NUM";
-            root->depth = depth;
-            root->val = numindex(stoll(temp));
-        }
-        else
-        {
-            root->opr = "ID";
-            root->depth = depth;
-            root->val = idindex(temp);
-        }
-        root->left = NULL;
-        root->right = NULL;
-        return root;
+        this->opr = opr;
+        this->val = val;
+        this->depth = depth;
+        this->left = NULL;
+        this->right = NULL;
     }
-    if (Input[l].token == "(" && Input[r].token == ")")
+
+    ~Tree()
     {
-        Tree *root = (Tree *)malloc(sizeof(Tree));
-        root->opr = Input[l + 1].token;
-        root->depth = depth;
-        int mid;
-        int par = 0;
-        for (int i = l + 2; i < r; i++)
+        this->left = NULL;
+        this->right = NULL;
+    }
+
+    Tree *MakeTree(int l, int r, int depth)
+    {
+        if (l > r)
+            return NULL;
+        if (l == r)
         {
-            if (Input[i].token == "(")
-                par++;
-            else if (Input[i].token == ")")
-                par--;
-            if (par == 0)
+            Tree *root;
+            string temp = Input[l].token;
+            if ((temp[0] >= '0' && temp[0] <= '9') || temp[0] == '-')
             {
-                mid = i;
-                break;
+                root = new Tree("NUM", depth, numindex(stoll(temp)));
             }
+            else
+            {
+                root = new Tree("ID", depth, idindex((temp)));
+            }
+            return root;
         }
-        root->left = MakeTree(l + 2, mid, depth + 1);
-        root->right = MakeTree(mid + 1, r - 1, depth + 1);
+        if (Input[l].token == "(" && Input[r].token == ")")
+        {
+            Tree *root = new Tree(Input[l + 1].token, depth);
+            int mid;
+            int par = 0;
+            for (int i = l + 2; i < r; i++)
+            {
+                if (Input[i].token == "(")
+                    par++;
+                else if (Input[i].token == ")")
+                    par--;
+                if (par == 0)
+                {
+                    mid = i;
+                    break;
+                }
+            }
+            root->left = root->MakeTree(l + 2, mid, depth + 1);
+            root->right = root->MakeTree(mid + 1, r - 1, depth + 1);
 
-        return root;
+            return root;
+        }
+        return NULL;
     }
-    return NULL;
-}
-
-void Traverse(Tree *root)
-{
-    if (root->left == NULL && root->right == NULL)
-    {
-        cout << root->val << " ";
-        return;
-    }
-    if (root == NULL)
-        return;
-    Traverse(root->left);
-    cout << root->opr << " ";
-    Traverse(root->right);
-}
+};
 
 int Eval(Tree *root)
 {
@@ -421,27 +418,22 @@ int main()
         }
     }
 
-    // for( int i=0; i<insize; i++){
-    //     cout<<Input[i].token<<" "<<Input[i].tokenid<<'\n';
-    // }
-
-        Tree *root = MakeTree(0, insize - 1, 0);
-    if (isfromgrammer()==1)
+    Tree *root = NULL;
+    if (isfromgrammer() == 1)
     {
-        cout << '\n';
-        cout << "Parsing is Successful\n";
+        root = root->MakeTree(0, insize - 1, 0);
+        cout << "Parsing is Successful\n\n";
         printTree(root);
         if (idsize != 0)
         {
-            cout << "Reading variable values fron the input\n";
+            cout << "\nReading variable values fron the input\n";
             for (int i = 0; i < idsize; i++)
             {
                 cout << IdTable[i].name << ": " << IdTable[i].value << '\n';
             }
         }
-        cout << "The value of the expression is ";
+        cout << "\nThe value of the expression is ";
         cout << Eval(root) << '\n';
         deleteTree(root);
     }
-    
 }
