@@ -1,0 +1,2 @@
+For using this circuit to subtract two n-bit numbers, we will convert the number being subtracted to negative by using the two's complement representation, inverting all of the bits of the number and ​adding 1. 
+Then we can add these two numbers.
