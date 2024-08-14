@@ -1,15 +1,26 @@
+module half_adder (
+    input A,
+    input B,
+    output Sum,
+    output Carry
+);
+
+    xor gate1(Sum, A, B);
+    and gate2(Carry, A, B);
+
+endmodule
+
 module half_adder_nbit #(parameter N = 3) (
-    input [N-1:0] A,    // N-bit input A
-    input [N-1:0] B,    // N-bit input B
-    output [N-1:0] Sum, // N-bit output Sum
-    output [N-1:0] Carry // N-bit output Carry
+    input [N-1:0] A,
+    input [N-1:0] B,
+    output [N-1:0] Sum,
+    output [N-1:0] Carry
 );
 
     genvar i;
     generate
         for (i = 0; i < N; i = i + 1) begin : gen_half_adder
-            assign Sum[i] = A[i] ^ B[i];
-            assign Carry[i] = A[i] & B[i];
+            half_adder ha(A[i], B[i], Sum[i], Carry[i]);
         end
     endgenerate
 
