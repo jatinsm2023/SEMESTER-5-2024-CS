@@ -5,6 +5,7 @@
 #define NUM 3
 #define ID 4
 #define OP 5
+#define NR 6
 
 %}
 
@@ -13,7 +14,8 @@ spaces         {space}*
 digit          [0-9]
 num            [-]?{digit}+
 id             [a-zA-Z_][a-zA-Z0-9]*
-              
+anything        .
+
 %%
 
 {spaces}        {}
@@ -26,4 +28,5 @@ id             [a-zA-Z_][a-zA-Z0-9]*
 "/"     {return (OP);}
 "*"     {return (OP);}
 "%"     {return (OP);}
+{anything}     {return (NR);}
 %%

@@ -1,4 +1,3 @@
 flex list.l
 g++ evalexpr.cpp
- ./a.out < list.txt
- ./a.out < biglist.txt
+valgrind ./a.out < biglist.txt

@@ -20,7 +20,7 @@ struct In
     int tokenid;
 };
 
-
+// Input Table
 In Input[MAX];
 int insize;
 
@@ -29,6 +29,7 @@ int idsize;
 
 int NumTable[MAX];
 int numsize;
+
 
 void addIDtable(string s)
 {
@@ -61,6 +62,7 @@ void printIdtable()
     cout << '\n';
 }
 
+
 void printNumtable()
 {
     for (int i = 0; i < numsize; i++)
@@ -70,6 +72,7 @@ void printNumtable()
     cout << '\n';
 }
 
+// Function to find Index of a ID to store in Tree Leaf
 int idindex(string s)
 {
     for (int i = 0; i < idsize; i++)
@@ -82,6 +85,7 @@ int idindex(string s)
     return -1;
 }
 
+// Function to find Index of a Number to store in Tree Leaf
 int numindex(int s)
 {
     for (int i = 0; i < numsize; i++)
@@ -95,6 +99,7 @@ int numindex(int s)
 }
 
 
+// Part 3: Tree for Parsing
 class Tree
 {
 public:
@@ -248,102 +253,9 @@ void deleteTree(Tree *root)
     delete root;
 }
 
-int isfromgrammer()
-{
-    stack<int> s;
-    int iter = 0;
-    s.push(0); // Initial state
 
-    while (!s.empty())
-    {
-        int a = s.top();
-        s.pop();
-
-        // cout << "Processing state: " << a << ", iter: " << iter << '\n';
-
-        if (a >= 3 && a <= 11) // Token IDs are between 3 and 11
-        {
-            if (iter < insize && a == Input[iter].tokenid)
-            {
-                // cout << "Matched token: " << Input[iter].token << '\n';
-                iter++;
-            }
-            else
-            {
-                cout << "***ERROR: Unexpected token " << (iter < insize ? Input[iter].token : "N/A") << '\n';
-                return 0;
-            }
-        }
-        else
-        {
-            if (a == 0)
-            {
-                if (iter < insize && Input[iter].tokenid == 3) // Open Bracket
-                {
-                    s.push(4);
-                    s.push(2);
-                    s.push(2);
-                    s.push(1);
-                    s.push(3);
-                }
-                else
-                {
-                    cout << "***ERROR: Expected opening bracket\n";
-                    return 0;
-                }
-            }
-            else if (a == 1)
-            {
-                if (iter < insize && (Input[iter].tokenid >= 7 && Input[iter].tokenid <= 11))
-                {
-                    s.push(Input[iter].tokenid);
-                }
-                else
-                {
-                    cout << "***ERROR: Unexpected token or operator\n";
-                    return 0;
-                }
-            }
-            else if (a == 2)
-            {
-                if (iter < insize)
-                {
-                    if (Input[iter].tokenid == 3)
-                    {
-                        s.push(0);
-                    }
-                    else if (Input[iter].tokenid == 5)
-                    {
-                        s.push(5);
-                    }
-                    else if (Input[iter].tokenid == 6)
-                    {
-                        s.push(6);
-                    }
-                    else
-                    {
-                        cout << "***ERROR: Expected a valid token\n";
-                        return 0;
-                    }
-                }
-                else
-                {
-                    cout << "***ERROR: Unexpected end of input\n";
-                    return 0;
-                }
-            }
-        }
-    }
-
-    if (iter != insize)
-    {
-        cout << "***ERROR: Input not fully consumed\n";
-        return 0;
-    }
-    return 1;
-}
-
-int main()
+// Part 1: Lexical Analysis
+void Lexical_Analysis()
 {
     int token;
     idsize = 0;
@@ -355,19 +267,17 @@ int main()
     {
         if (op < cp)
         {
-            cout << "**ERROR\n";
+            cout << "**ERROR Expected (\n";
             exit(-1);
         }
         switch (token)
         {
         case OR:
-            // cout << "Open Braket\n";
             Input[insize].tokenid = 3;
             Input[insize++].token = "(";
             op++;
             break;
         case CR:
-            // cout << "Close Braket\n";
             Input[insize].tokenid = 4;
             Input[insize++].token = ")";
             cp++;
@@ -390,7 +300,6 @@ int main()
             Input[insize++].token = string(yytext);
             break;
         case OP:
-            // cout << "Operator:- " << yytext << '\n';
             if (string(yytext) == "+")
             {
                 Input[insize].tokenid = 7;
@@ -413,13 +322,149 @@ int main()
             }
             Input[insize++].token = string(yytext);
             break;
+        case NR:
+            cerr << "***ERROR: Invalid token " << yytext << endl;
+            exit(-1);
+            return ;
         default:
             break;
         }
     }
+}
+
+// Part 2: Table for Parsing 
+// Part 3: checking the Input to be from grammer or not
+int Parsing()
+{
+
+    // Table
+    string M[3][12];
+
+    M[0][3] = "31224"; // EXPR -> ( OP ARG ARG )
+    M[2][3] = "0";     // ARG -> EXPR
+    M[2][5] = "5";     // ARG -> ID
+    M[2][6] = "6";     // ARG -> NUM
+    M[1][7] = "7";     // OP -> +
+    M[1][8] = "8";     // OP -> -
+    M[1][9] = "9";     // OP -> *
+    M[1][10] = "10";   // OP -> /
+    M[1][11] = "11";   // OP -> %
+
+    stack<int> s;
+    int iter = 0;
+
+    s.push(0);
+
+    while (!s.empty())
+    {
+        int a = s.top();
+        s.pop();
+
+        if (a >= 3 && a <= 11)
+        {
+            if (iter < insize && a == Input[iter].tokenid)
+            {
+                iter++;
+            }
+            else
+            {
+                cerr << "***ERROR: Right parenthesis expected in place of " << (iter < insize ? Input[iter].token : "N/A") << '\n';
+                exit(-1);
+                return 0;
+            }
+        }
+        else
+        {
+            if (a == 0)
+            {
+                if (iter < insize && Input[iter].tokenid == 3)
+                {
+                    string temp = M[a][Input[iter].tokenid];
+                    for (int i = temp.size() - 1; i >= 0; i--)
+                    {
+                        s.push(temp[i] - '0');
+                    }
+                }
+                else
+                {
+                    cerr << "***ERROR: Left parenthesis expected in place of " << Input[iter].token << '\n';
+                    exit(-1);
+                    return 0;
+                }
+            }
+            else if (a == 1)
+            {
+                if (iter < insize && (Input[iter].tokenid >= 7 && Input[iter].tokenid <= 11))
+                {
+                    s.push(Input[iter].tokenid);
+                }
+                else
+                {
+                    cerr << "***ERROR: Operator expected in place of " << Input[iter].token << '\n';
+                    exit(-1);
+                    return 0;
+                }
+            }
+            else if (a == 2)
+            {
+                if (iter < insize)
+                {
+                    if (Input[iter].tokenid == 3)
+                    {
+                        string temp = M[a][Input[iter].tokenid];
+                        for (int i = temp.size() - 1; i >= 0; i--)
+                        {
+                            s.push(temp[i] - '0');
+                        }
+                    }
+                    else if (Input[iter].tokenid == 5)
+                    {
+                        string temp = M[a][Input[iter].tokenid];
+                        for (int i = temp.size() - 1; i >= 0; i--)
+                        {
+                            s.push(temp[i] - '0');
+                        }
+                    }
+                    else if (Input[iter].tokenid == 6)
+                    {
+                        string temp = M[a][Input[iter].tokenid];
+                        for (int i = temp.size() - 1; i >= 0; i--)
+                        {
+                            s.push(temp[i] - '0');
+                        }
+                    }
+                    else
+                    {
+                        cerr << "***ERROR: ID/NUM/LP expected in place of " << Input[iter].token << '\n';
+                        exit(-1);
+                        return 0;
+                    }
+                }
+                else
+                {
+                    cerr << "***ERROR: Unexpected end of input\n";
+                    exit(-1);
+                    return 0;
+                }
+            }
+        }
+    }
+
+    if (iter != insize)
+    {
+        cerr << "***ERROR: Input not fully consumed\n";
+        exit(-1);
+        return 0;
+    }
+    return 1;
+}
+
+int main()
+{
+    Lexical_Analysis();
 
     Tree *root = NULL;
-    if (isfromgrammer() == 1)
+    if (Parsing() == 1)
     {
         root = root->MakeTree(0, insize - 1, 0);
         cout << "Parsing is Successful\n\n";
