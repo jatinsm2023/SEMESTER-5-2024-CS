@@ -21,7 +21,7 @@ punctuator ("\.\.\.")|("\.")|("->")|("++")|("--")|("<<")|(">>")|("<=")|(">=")|("
 
 escape_sequence  ("\\'")|("\\\"")|("\\?")|("\\\\")|("\\a")|("\\b")|("\\f")|("\\n")|("\\r")|("\\t")|("\\v")
 newline "\n"
-s_char [^"\\]|{escape_sequence}
+s_char [^"\\\n]|{escape_sequence}
 
 string_literal \"({s_char}+)*\"
 
@@ -36,7 +36,7 @@ sign   [+-]
 
 exponent_part   [eE]{sign}?{digit_sequence}
 
-fractional_constant {digit_sequence}?\.{digit_sequence}|{digit_sequence}\.
+fractional_constant ({digit_sequence}?\.{digit_sequence})|({digit_sequence}\.)
 
 floating_constant  {fractional_constant}({exponent_part})?|{digit_sequence}{exponent_part}
 
