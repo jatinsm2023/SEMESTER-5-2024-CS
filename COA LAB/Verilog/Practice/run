@@ -1,0 +1,2 @@
+iverilog test.v
+./a.out
