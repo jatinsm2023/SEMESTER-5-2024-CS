@@ -1,0 +1,476 @@
+<Single Line Comment, // Keywords >
+<Keyword, auto >
+<Keyword, int >
+<Identifer, x >
+<Punctuator, = >
+<Integer Constant, 10 >
+<Punctuator, ; >
+<Keyword, const >
+<Keyword, float >
+<Identifer, pi >
+<Punctuator, = >
+<Floating Constant, 3.14 >
+<Punctuator, ; >
+<Keyword, void >
+<Identifer, func >
+<Punctuator, ( >
+<Punctuator, ) >
+<Punctuator, { >
+<Keyword, return >
+<Punctuator, ; >
+<Punctuator, } >
+<Keyword, unsigned >
+<Keyword, long >
+<Identifer, ul >
+<Punctuator, = >
+<Integer Constant, 100 >
+<Punctuator, ; >
+<Keyword, static >
+<Keyword, int >
+<Identifer, arr >
+<Punctuator, [ >
+<Integer Constant, 5 >
+<Punctuator, ] >
+<Punctuator, = >
+<Punctuator, { >
+<Integer Constant, 1 >
+<Punctuator, , >
+<Integer Constant, 2 >
+<Punctuator, , >
+<Integer Constant, 3 >
+<Punctuator, , >
+<Integer Constant, 4 >
+<Punctuator, , >
+<Integer Constant, 5 >
+<Punctuator, } >
+<Punctuator, ; >
+<Keyword, volatile >
+<Keyword, double >
+<Identifer, d >
+<Punctuator, = >
+<Floating Constant, 0.0 >
+<Punctuator, ; >
+<Single Line Comment, // Identifiers >
+<Keyword, int >
+<Identifer, main >
+<Punctuator, ( >
+<Punctuator, ) >
+<Punctuator, { >
+<Keyword, int >
+<Identifer, y >
+<Punctuator, = >
+<Identifer, x >
+<Punctuator, + >
+<Integer Constant, 5 >
+<Punctuator, ; >
+<Keyword, float >
+<Identifer, result >
+<Punctuator, = >
+<Identifer, pi >
+<Punctuator, * >
+<Identifer, y >
+<Punctuator, ; >
+<Keyword, char >
+<Identifer, ch >
+<Punctuator, = >
+<Character Constant, 'a' >
+<Punctuator, ; >
+<Keyword, _Bool >
+<Identifer, isTrue >
+<Punctuator, = >
+<Integer Constant, 1 >
+<Punctuator, ; >
+<Keyword, _Complex >
+<Identifer, z >
+<Punctuator, = >
+<Floating Constant, 1.0 >
+<Punctuator, + >
+<Floating Constant, 2.0 >
+<Punctuator, ; >
+<Single Line Comment, // Constants >
+<Keyword, int >
+<Identifer, num >
+<Punctuator, = >
+<Integer Constant, 100 >
+<Punctuator, ; >
+<Keyword, float >
+<Identifer, num2 >
+<Punctuator, = >
+<Floating Constant, 10.5e-2 >
+<Punctuator, ; >
+<Keyword, char >
+<Identifer, c >
+<Punctuator, = >
+<Character Constant, 'A' >
+<Punctuator, ; >
+<Keyword, char >
+<Punctuator, * >
+<Identifer, str >
+<Punctuator, = >
+<String Literal, "Hello, World!" >
+<Punctuator, ; >
+<Keyword, unsigned >
+<Keyword, long >
+<Keyword, long >
+<Identifer, ull >
+<Punctuator, = >
+<Integer Constant, 123456789012345 >
+<Punctuator, ; >
+<Keyword, float >
+<Identifer, scientific >
+<Punctuator, = >
+<Floating Constant, 1.23e10 >
+<Punctuator, ; >
+<Single Line Comment, // Punctuators >
+<Keyword, int >
+<Identifer, a >
+<Punctuator, = >
+<Integer Constant, 10 >
+<Punctuator, , >
+<Identifer, b >
+<Punctuator, = >
+<Integer Constant, 20 >
+<Punctuator, ; >
+<Identifer, a >
+<Punctuator, += >
+<Identifer, b >
+<Punctuator, ; >
+<Identifer, b >
+<Punctuator, ++ >
+<Punctuator, ; >
+<Keyword, if >
+<Punctuator, ( >
+<Identifer, a >
+<Punctuator, > >
+<Identifer, b >
+<Punctuator, ) >
+<Punctuator, { >
+<Identifer, a >
+<Punctuator, = >
+<Identifer, a >
+<Punctuator, - >
+<Identifer, b >
+<Punctuator, ; >
+<Punctuator, } >
+<Keyword, else >
+<Punctuator, { >
+<Identifer, b >
+<Punctuator, = >
+<Identifer, a >
+<Punctuator, * >
+<Integer Constant, 2 >
+<Punctuator, ; >
+<Punctuator, } >
+<Keyword, for >
+<Punctuator, ( >
+<Keyword, int >
+<Identifer, i >
+<Punctuator, = >
+<Integer Constant, 0 >
+<Punctuator, ; >
+<Identifer, i >
+<Punctuator, < >
+<Integer Constant, 5 >
+<Punctuator, ; >
+<Identifer, i >
+<Punctuator, ++ >
+<Punctuator, ) >
+<Punctuator, { >
+<Identifer, arr >
+<Punctuator, [ >
+<Identifer, i >
+<Punctuator, ] >
+<Punctuator, = >
+<Identifer, i >
+<Punctuator, ; >
+<Punctuator, } >
+<Keyword, while >
+<Punctuator, ( >
+<Identifer, x >
+<Punctuator, > >
+<Integer Constant, 0 >
+<Punctuator, ) >
+<Punctuator, { >
+<Identifer, x >
+<Punctuator, -- >
+<Punctuator, ; >
+<Punctuator, } >
+<Single Line Comment, // Multi-line and Single-line Comments >
+<Multi Line Comment, /* This is a multi-line comment
+       that spans multiple lines */ >
+<Single Line Comment, // This is a single-line comment >
+<Single Line Comment, // String literals with escape sequences >
+<Keyword, char >
+<Punctuator, * >
+<Identifer, escaped_str >
+<Punctuator, = >
+<String Literal, "Tab\tNewLine\nBackslash\\DoubleQuote\"SingleQuote\'" >
+<Punctuator, ; >
+<Single Line Comment, // Complex expressions >
+<Keyword, int >
+<Identifer, complex >
+<Punctuator, = >
+<Punctuator, ( >
+<Punctuator, ( >
+<Identifer, a >
+<Punctuator, << >
+<Integer Constant, 2 >
+<Punctuator, ) >
+<Punctuator, & >
+<Identifer, b >
+<Punctuator, ) >
+<Punctuator, ^ >
+<Punctuator, ( >
+<Identifer, a >
+<Punctuator, | >
+<Identifer, b >
+<Punctuator, ) >
+<Punctuator, ; >
+<Single Line Comment, // Special characters in strings and char literals >
+<Keyword, char >
+<Identifer, special >
+<Punctuator, = >
+<Character Constant, '\n' >
+<Punctuator, ; >
+<Keyword, char >
+<Punctuator, * >
+<Identifer, special_str >
+<Punctuator, = >
+<String Literal, "This string contains a \\ backslash and a \" double quote" >
+<Punctuator, ; >
+<Single Line Comment, // Nested and combined expressions >
+<Keyword, int >
+<Identifer, combined >
+<Punctuator, = >
+<Punctuator, ( >
+<Identifer, a >
+<Punctuator, + >
+<Identifer, b >
+<Punctuator, ) >
+<Punctuator, * >
+<Punctuator, ( >
+<Identifer, x >
+<Punctuator, - >
+<Identifer, y >
+<Punctuator, ) >
+<Punctuator, / >
+<Identifer, z >
+<Punctuator, ; >
+<Identifer, combined >
+<Punctuator, = >
+<Punctuator, ( >
+<Identifer, a >
+<Punctuator, && >
+<Identifer, b >
+<Punctuator, ) >
+<Punctuator, || >
+<Punctuator, ( >
+<Identifer, x >
+<Punctuator, == >
+<Identifer, y >
+<Punctuator, ) >
+<Punctuator, ? >
+<Identifer, a >
+<Punctuator, : >
+<Identifer, b >
+<Punctuator, ; >
+<Single Line Comment, // Floating-point operations >
+<Keyword, double >
+<Identifer, result_double >
+<Punctuator, = >
+<Floating Constant, 1.0 >
+<Punctuator, / >
+<Floating Constant, 3.0 >
+<Punctuator, * >
+<Identifer, pi >
+<Punctuator, ; >
+<Keyword, double >
+<Identifer, complex_expr >
+<Punctuator, = >
+<Floating Constant, 2.0 >
+<Punctuator, + >
+<Floating Constant, 3.0 >
+<Punctuator, * >
+<Punctuator, ( >
+<Floating Constant, 1.0 >
+<Punctuator, / >
+<Floating Constant, 2.0 >
+<Punctuator, ) >
+<Punctuator, ; >
+<Single Line Comment, // Switch case statement with multiple cases >
+<Keyword, switch >
+<Punctuator, ( >
+<Identifer, a >
+<Punctuator, ) >
+<Punctuator, { >
+<Keyword, case >
+<Integer Constant, 1 >
+<Punctuator, : >
+<Identifer, x >
+<Punctuator, = >
+<Integer Constant, 10 >
+<Punctuator, ; >
+<Keyword, break >
+<Punctuator, ; >
+<Keyword, case >
+<Integer Constant, 2 >
+<Punctuator, : >
+<Identifer, x >
+<Punctuator, = >
+<Integer Constant, 20 >
+<Punctuator, ; >
+<Keyword, break >
+<Punctuator, ; >
+<Keyword, default >
+<Punctuator, : >
+<Identifer, x >
+<Punctuator, = >
+<Integer Constant, 0 >
+<Punctuator, ; >
+<Punctuator, } >
+<Keyword, return >
+<Integer Constant, 0 >
+<Punctuator, ; >
+<Punctuator, } >
+<Single Line Comment, // More complex function declarations >
+<Keyword, void >
+<Identifer, print_hello >
+<Punctuator, ( >
+<Punctuator, ) >
+<Punctuator, { >
+<Identifer, printf >
+<Punctuator, ( >
+<String Literal, "Hello, World!\n" >
+<Punctuator, ) >
+<Punctuator, ; >
+<Punctuator, } >
+
+
+
+ --- Symbol Table --- 
+
+
+SINGLE_LINE_COMMENT : // Keywords
+KEYWORDS : auto
+KEYWORDS : int
+IDENTIFER : x
+PUNCTUATORS : =
+INTEGER_CONSTANT : 10
+PUNCTUATORS : ;
+KEYWORDS : const
+KEYWORDS : float
+IDENTIFER : pi
+FLOATING_CONSTANT : 3.14
+KEYWORDS : void
+IDENTIFER : func
+PUNCTUATORS : (
+PUNCTUATORS : )
+PUNCTUATORS : {
+KEYWORDS : return
+PUNCTUATORS : }
+KEYWORDS : unsigned
+KEYWORDS : long
+IDENTIFER : ul
+INTEGER_CONSTANT : 100
+KEYWORDS : static
+IDENTIFER : arr
+PUNCTUATORS : [
+INTEGER_CONSTANT : 5
+PUNCTUATORS : ]
+INTEGER_CONSTANT : 1
+PUNCTUATORS : ,
+INTEGER_CONSTANT : 2
+INTEGER_CONSTANT : 3
+INTEGER_CONSTANT : 4
+KEYWORDS : volatile
+KEYWORDS : double
+IDENTIFER : d
+FLOATING_CONSTANT : 0.0
+SINGLE_LINE_COMMENT : // Identifiers
+IDENTIFER : main
+IDENTIFER : y
+PUNCTUATORS : +
+IDENTIFER : result
+PUNCTUATORS : *
+KEYWORDS : char
+IDENTIFER : ch
+CHARACTER_CONSTANT : 'a'
+KEYWORDS : _Bool
+IDENTIFER : isTrue
+KEYWORDS : _Complex
+IDENTIFER : z
+FLOATING_CONSTANT : 1.0
+FLOATING_CONSTANT : 2.0
+SINGLE_LINE_COMMENT : // Constants
+IDENTIFER : num
+IDENTIFER : num2
+FLOATING_CONSTANT : 10.5e-2
+IDENTIFER : c
+CHARACTER_CONSTANT : 'A'
+IDENTIFER : str
+STRING_LITERAL : "Hello, World!"
+IDENTIFER : ull
+INTEGER_CONSTANT : 123456789012345
+IDENTIFER : scientific
+FLOATING_CONSTANT : 1.23e10
+SINGLE_LINE_COMMENT : // Punctuators
+IDENTIFER : a
+IDENTIFER : b
+INTEGER_CONSTANT : 20
+PUNCTUATORS : +=
+PUNCTUATORS : ++
+KEYWORDS : if
+PUNCTUATORS : >
+PUNCTUATORS : -
+KEYWORDS : else
+KEYWORDS : for
+IDENTIFER : i
+INTEGER_CONSTANT : 0
+PUNCTUATORS : <
+KEYWORDS : while
+PUNCTUATORS : --
+SINGLE_LINE_COMMENT : // Multi-line and Single-line Comments
+MULTI_LINE_COMMENT : /* This is a multi-line comment
+       that spans multiple lines */
+SINGLE_LINE_COMMENT : // This is a single-line comment
+SINGLE_LINE_COMMENT : // String literals with escape sequences
+IDENTIFER : escaped_str
+STRING_LITERAL : "Tab\tNewLine\nBackslash\\DoubleQuote\"SingleQuote\'"
+SINGLE_LINE_COMMENT : // Complex expressions
+IDENTIFER : complex
+PUNCTUATORS : <<
+PUNCTUATORS : &
+PUNCTUATORS : ^
+PUNCTUATORS : |
+SINGLE_LINE_COMMENT : // Special characters in strings and char literals
+IDENTIFER : special
+CHARACTER_CONSTANT : '\n'
+IDENTIFER : special_str
+STRING_LITERAL : "This string contains a \\ backslash and a \" double quote"
+SINGLE_LINE_COMMENT : // Nested and combined expressions
+IDENTIFER : combined
+PUNCTUATORS : /
+PUNCTUATORS : &&
+PUNCTUATORS : ||
+PUNCTUATORS : ==
+PUNCTUATORS : ?
+PUNCTUATORS : :
+SINGLE_LINE_COMMENT : // Floating-point operations
+IDENTIFER : result_double
+FLOATING_CONSTANT : 3.0
+IDENTIFER : complex_expr
+SINGLE_LINE_COMMENT : // Switch case statement with multiple cases
+KEYWORDS : switch
+KEYWORDS : case
+KEYWORDS : break
+KEYWORDS : default
+SINGLE_LINE_COMMENT : // More complex function declarations
+IDENTIFER : print_hello
+IDENTIFER : printf
+STRING_LITERAL : "Hello, World!\n"
+
+
+
+ --- End of Symbol Table --- 
+
+

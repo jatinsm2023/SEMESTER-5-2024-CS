@@ -1,3 +1,0 @@
-flex ass3_22cs30032_22cs10073.l
-g++ main.cpp
-./a.out < text.txt

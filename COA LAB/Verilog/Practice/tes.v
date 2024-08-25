@@ -74,6 +74,7 @@ module LFSR_tb;
     forever #5 clk = ~clk; // Toggle clock every 5 ns
   end
 
+
   // Stimulus
   initial begin
     // Initialize signals
@@ -98,7 +99,8 @@ module LFSR_tb;
 
   // Monitor the output state
   initial begin
-    $monitor("Time: %0d, Reset: %b, Select: %b, State: %b", $time, rst, sel, state);
+    $display("Time\tReset\tSelect\tState");
+    $monitor("%0d\t%b\t%b\t%b", $time, rst, sel, state);
   end
 
 endmodule

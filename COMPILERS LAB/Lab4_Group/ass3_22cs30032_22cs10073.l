@@ -1,63 +1,60 @@
 %{
-    #define COM 1
-    #define PUN 2
-    #define ESC 3
-    #define STR 4
-    #define CHAR 5
-    #define FR 6
-    #define INT 7
-    #define ID 8
-    #define FL 9
-    #define KW 10
+    #define KEYWORD 1
+    #define IDENTIFIER 2
+    #define INTEGER_CONSTANT 3
+    #define FLOATING_CONSTANT 4
+    #define CHARACTER_CONSTANT 5
+    #define STRING_LITERAL 6
+    #define PUNCTUATOR 7
+    #define SINGLE_LINE_COMMENT 8
+    #define MULTI_LINE_COMMENT 9
 %}
 
+keywords                "auto"|"break"|"case"|"char"|"const"|"continue"|"default"|"do"|"double"|"else"|"enum"|"extern"|"float"|"for"|"goto"|"if"|"inline"|"int"|"long"|"register"|"restrict"|"return"|"short"|"signed"|"sizeof"|"static"|"struct"|"switch"|"typedef"|"union"|"unsigned"|"void"|"volatile"|"while"|"_Bool"|"_Complex"|"_Imaginary"
 
-commentstart "/*"
-commentend "*/"
-comment    {commentstart}.*{commentend}
-singlelinecomment    "//".*
+Identifier              [_a-zA-Z][_a-zA-Z0-9]*
 
-punctuator ("\.\.\.")|("\.")|("->")|("++")|("--")|("<<")|(">>")|("<=")|(">=")|("==")|("!=")|("&&")|("||")|("\*=")|("/=")|("%=")|("+=")|("-=")|("<<=")|(">>=")|("&=")|("^=")|("|=")|[(){}[\]&\*+\-~!/%<>\^\|\?:;=,#]
+digit                   [0-9]
+digit_sequence          {digit}+
+integer_constant        {digit}+
+sign                    [+-]
+exponent_part           [eE]{sign}?{digit_sequence}
 
-escape_sequence  ("\\'")|("\\\"")|("\\?")|("\\\\")|("\\a")|("\\b")|("\\f")|("\\n")|("\\r")|("\\t")|("\\v")
-newline "\n"
-s_char [^"\\\n]|{escape_sequence}
+fractional_constant     ({digit_sequence}?\.{digit_sequence})|({digit_sequence}\.)
+floating_constant       ({fractional_constant}{exponent_part}?)|{digit_sequence}{exponent_part}
 
-string_literal \"({s_char}+)*\"
+escape_sequence        "\'"|"\""|"\?"|"\\"|"\b"|"\\n"|"\r"|"\v"|"\a"|"\t"|"\f"
+c_char                  [^("\\"|"\'"|"\n")]|{escape_sequence}
+c_char_sequence         {c_char}+
+character_constant      \'({c_char_sequence})\'
 
-c_char [^'\\\n]|{escape_sequence}
+const                   {integer_constant}|{floating_constant}|{character_constant}
 
-character_constant  '({c_char}+)'
+s_char                  [^("\\"|"\""|"\n")]|{escape_sequence}
+s_char_sequence         {s_char}+
+string_literal          "\""{s_char_sequence}"\""
 
-digit   [0-9]
-digit_sequence  {digit}+
+punctuator              "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-"|"~"|"!"|"/"|"%"|"<<"|">>"|"<"|">"|"<="|">="|"=="|"!="|"^"|"|"|"&&"|"||"|"?"|":"|";"|"..."|"="|"*="|"/="|"%="|"+="|"-="|"<<="|">>="|"&="|"^="|"|="|","|"#"
 
-sign   [+-]
+space                   [ \t\n]
 
-exponent_part   [eE]{sign}?{digit_sequence}
-
-fractional_constant ({digit_sequence}?\.{digit_sequence})|({digit_sequence}\.)
-
-floating_constant  {fractional_constant}({exponent_part})?|{digit_sequence}{exponent_part}
-
-integer_constant {digit_sequence}
-
-Identifier [_a-zA-Z][_a-zA-Z0-9]*
-
-keywords ("auto")|("break")|("case")|("char")|("const")|("continue")|("default")|("do")|("double")|("else")|("enum")|("extern")|("float")|("for")|("goto")|("if")|("inline")|("int")|("long")|("register")|("restrict")|("return")|("short")|("signed")|("sizeof")|("static")|("struct")|("switch")|("typedef")|("union")|("unsigned")|("void")|("volatile")|("while")|("_Bool")|("_Complex")|("_Imaginary")
-
-
+commentstart            "/*"
+commentend              "*/"
+commmentbody            [^*]|(\*[^/])
+multicomment            {commentstart}{commmentbody}*{commentend}
+singlelinecomment       "//"[^\n]*
 
 %%
 
-{comment} {return COM;}
-{singlelinecomment} {return COM;}
-{punctuator} {return PUN;}
-{string_literal} {return STR;}
-{character_constant} {return CHAR;}
-{floating_constant} {return FL;}
-{integer_constant} {return INT;}
-{keywords} {return KW;}
-{Identifier} {return ID;}
+{singlelinecomment}         {return SINGLE_LINE_COMMENT;}
+{multicomment}              {return MULTI_LINE_COMMENT;}
+{keywords}                  {return KEYWORD;}
+{Identifier}                {return IDENTIFIER;}
+{punctuator}                {return PUNCTUATOR;}
+{string_literal}            {return STRING_LITERAL;}
+{character_constant}        {return CHARACTER_CONSTANT;}
+{integer_constant}          {return INTEGER_CONSTANT;}
+{floating_constant}         {return FLOATING_CONSTANT;}
+{space}                     {}
 
 %%
