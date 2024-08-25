@@ -1,0 +1,136 @@
+#! /usr/bin/vvp
+:ivl_version "11.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/system.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/vhdl_sys.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/vhdl_textio.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/v2005_math.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/va_math.vpi";
+S_0x573de8b83690 .scope module, "DFF" "DFF" 2 1;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "a";
+    .port_info 1 /INPUT 1 "rst";
+    .port_info 2 /INPUT 1 "clk";
+    .port_info 3 /OUTPUT 1 "b";
+o0x708390fcf018 .functor BUFZ 1, C4<z>; HiZ drive
+v0x573de8b83a20_0 .net "a", 0 0, o0x708390fcf018;  0 drivers
+v0x573de8b9c5e0_0 .var "b", 0 0;
+o0x708390fcf078 .functor BUFZ 1, C4<z>; HiZ drive
+v0x573de8b9c6a0_0 .net "clk", 0 0, o0x708390fcf078;  0 drivers
+o0x708390fcf0a8 .functor BUFZ 1, C4<z>; HiZ drive
+v0x573de8b9c740_0 .net "rst", 0 0, o0x708390fcf0a8;  0 drivers
+E_0x573de8b491f0 .event posedge, v0x573de8b9c740_0, v0x573de8b9c6a0_0;
+S_0x573de8b83890 .scope module, "tb_mux_2x1" "tb_mux_2x1" 2 19;
+ .timescale 0 0;
+v0x573de8b9ce20_0 .var "a", 0 0;
+v0x573de8b9cee0_0 .var "b", 0 0;
+v0x573de8b9cfb0_0 .var "sel", 0 0;
+v0x573de8b9d0b0_0 .net "y", 0 0, L_0x573de8b9d180;  1 drivers
+S_0x573de8b9c880 .scope module, "uut" "MUX" 2 27, 2 15 0, S_0x573de8b83890;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "a";
+    .port_info 1 /INPUT 1 "b";
+    .port_info 2 /INPUT 1 "sel";
+    .port_info 3 /OUTPUT 1 "y";
+v0x573de8b9caa0_0 .net "a", 0 0, v0x573de8b9ce20_0;  1 drivers
+v0x573de8b9cb80_0 .net "b", 0 0, v0x573de8b9cee0_0;  1 drivers
+v0x573de8b9cc40_0 .net "sel", 0 0, v0x573de8b9cfb0_0;  1 drivers
+v0x573de8b9cce0_0 .net "y", 0 0, L_0x573de8b9d180;  alias, 1 drivers
+L_0x573de8b9d180 .functor MUXZ 1, v0x573de8b9ce20_0, v0x573de8b9cee0_0, v0x573de8b9cfb0_0, C4<>;
+    .scope S_0x573de8b83690;
+T_0 ;
+    %wait E_0x573de8b491f0;
+    %load/vec4 v0x573de8b9c740_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.0, 8;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x573de8b9c5e0_0, 0, 1;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/vec4 v0x573de8b83a20_0;
+    %store/vec4 v0x573de8b9c5e0_0, 0, 1;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+    .scope S_0x573de8b83890;
+T_1 ;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x573de8b9ce20_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x573de8b9cee0_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x573de8b9cfb0_0, 0, 1;
+    %vpi_call 2 40 "$display", "Test Case 1: sel = 0, a = 0, b = 0" {0 0 0};
+    %delay 10, 0;
+    %load/vec4 v0x573de8b9d0b0_0;
+    %pad/u 32;
+    %cmpi/ne 0, 0, 32;
+    %jmp/0xz  T_1.0, 6;
+    %vpi_call 2 42 "$display", "Error: Expected y = 0, got y = %b", v0x573de8b9d0b0_0 {0 0 0};
+T_1.0 ;
+    %vpi_call 2 44 "$display", "Test Case 2: sel = 0, a = 1, b = 0" {0 0 0};
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0x573de8b9ce20_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x573de8b9cee0_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x573de8b9cfb0_0, 0, 1;
+    %delay 10, 0;
+    %load/vec4 v0x573de8b9d0b0_0;
+    %pad/u 32;
+    %cmpi/ne 1, 0, 32;
+    %jmp/0xz  T_1.2, 6;
+    %vpi_call 2 47 "$display", "Error: Expected y = 1, got y = %b", v0x573de8b9d0b0_0 {0 0 0};
+T_1.2 ;
+    %vpi_call 2 49 "$display", "Test Case 3: sel = 1, a = 1, b = 1" {0 0 0};
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0x573de8b9ce20_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0x573de8b9cee0_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0x573de8b9cfb0_0, 0, 1;
+    %delay 10, 0;
+    %load/vec4 v0x573de8b9d0b0_0;
+    %pad/u 32;
+    %cmpi/ne 1, 0, 32;
+    %jmp/0xz  T_1.4, 6;
+    %vpi_call 2 52 "$display", "Error: Expected y = 1, got y = %b", v0x573de8b9d0b0_0 {0 0 0};
+T_1.4 ;
+    %vpi_call 2 54 "$display", "Test Case 4: sel = 1, a = 0, b = 1" {0 0 0};
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x573de8b9ce20_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0x573de8b9cee0_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0x573de8b9cfb0_0, 0, 1;
+    %delay 10, 0;
+    %load/vec4 v0x573de8b9d0b0_0;
+    %pad/u 32;
+    %cmpi/ne 1, 0, 32;
+    %jmp/0xz  T_1.6, 6;
+    %vpi_call 2 57 "$display", "Error: Expected y = 1, got y = %b", v0x573de8b9d0b0_0 {0 0 0};
+T_1.6 ;
+    %vpi_call 2 59 "$display", "Test Case 5: sel = 0, a = 0, b = 1" {0 0 0};
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x573de8b9ce20_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0x573de8b9cee0_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x573de8b9cfb0_0, 0, 1;
+    %delay 10, 0;
+    %load/vec4 v0x573de8b9d0b0_0;
+    %pad/u 32;
+    %cmpi/ne 0, 0, 32;
+    %jmp/0xz  T_1.8, 6;
+    %vpi_call 2 62 "$display", "Error: Expected y = 0, got y = %b", v0x573de8b9d0b0_0 {0 0 0};
+T_1.8 ;
+    %vpi_call 2 65 "$display", "Test Bench completed" {0 0 0};
+    %vpi_call 2 66 "$stop" {0 0 0};
+    %end;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "tes.v";
