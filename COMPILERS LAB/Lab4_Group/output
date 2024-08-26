@@ -87,7 +87,12 @@
 <Punctuator, + >
 <Floating Constant, 2.0 >
 <Punctuator, ; >
-<Single Line Comment, // Constants >
+<Keyword, char >
+<Identifer, c >
+<Punctuator, = >
+<Character Constant, 'Bfae' >
+<Punctuator, ; >
+<Single Line Comment, // Constants     >
 <Keyword, int >
 <Identifer, num >
 <Punctuator, = >
@@ -99,9 +104,10 @@
 <Floating Constant, 10.5e-2 >
 <Punctuator, ; >
 <Keyword, char >
-<Identifer, c >
+<Punctuator, * >
+<Identifer, str >
 <Punctuator, = >
-<Character Constant, 'A' >
+<String Literal, "Hello, World!" >
 <Punctuator, ; >
 <Keyword, char >
 <Punctuator, * >
@@ -350,124 +356,82 @@
  --- Symbol Table --- 
 
 
-SINGLE_LINE_COMMENT : // Keywords
-KEYWORDS : auto
-KEYWORDS : int
-IDENTIFER : x
-PUNCTUATORS : =
-INTEGER_CONSTANT : 10
-PUNCTUATORS : ;
-KEYWORDS : const
-KEYWORDS : float
-IDENTIFER : pi
-FLOATING_CONSTANT : 3.14
-KEYWORDS : void
-IDENTIFER : func
-PUNCTUATORS : (
-PUNCTUATORS : )
-PUNCTUATORS : {
-KEYWORDS : return
-PUNCTUATORS : }
-KEYWORDS : unsigned
-KEYWORDS : long
-IDENTIFER : ul
-INTEGER_CONSTANT : 100
-KEYWORDS : static
-IDENTIFER : arr
-PUNCTUATORS : [
-INTEGER_CONSTANT : 5
-PUNCTUATORS : ]
-INTEGER_CONSTANT : 1
-PUNCTUATORS : ,
-INTEGER_CONSTANT : 2
-INTEGER_CONSTANT : 3
-INTEGER_CONSTANT : 4
-KEYWORDS : volatile
-KEYWORDS : double
-IDENTIFER : d
-FLOATING_CONSTANT : 0.0
-SINGLE_LINE_COMMENT : // Identifiers
-IDENTIFER : main
-IDENTIFER : y
-PUNCTUATORS : +
-IDENTIFER : result
-PUNCTUATORS : *
-KEYWORDS : char
-IDENTIFER : ch
-CHARACTER_CONSTANT : 'a'
-KEYWORDS : _Bool
-IDENTIFER : isTrue
-KEYWORDS : _Complex
-IDENTIFER : z
-FLOATING_CONSTANT : 1.0
-FLOATING_CONSTANT : 2.0
-SINGLE_LINE_COMMENT : // Constants
-IDENTIFER : num
-IDENTIFER : num2
-FLOATING_CONSTANT : 10.5e-2
-IDENTIFER : c
-CHARACTER_CONSTANT : 'A'
-IDENTIFER : str
-STRING_LITERAL : "Hello, World!"
-IDENTIFER : ull
-INTEGER_CONSTANT : 123456789012345
-IDENTIFER : scientific
-FLOATING_CONSTANT : 1.23e10
-SINGLE_LINE_COMMENT : // Punctuators
-IDENTIFER : a
-IDENTIFER : b
-INTEGER_CONSTANT : 20
-PUNCTUATORS : +=
-PUNCTUATORS : ++
-KEYWORDS : if
-PUNCTUATORS : >
-PUNCTUATORS : -
-KEYWORDS : else
-KEYWORDS : for
-IDENTIFER : i
-INTEGER_CONSTANT : 0
-PUNCTUATORS : <
-KEYWORDS : while
-PUNCTUATORS : --
-SINGLE_LINE_COMMENT : // Multi-line and Single-line Comments
-MULTI_LINE_COMMENT : /* This is a multi-line comment
-       that spans multiple lines */
-SINGLE_LINE_COMMENT : // This is a single-line comment
-SINGLE_LINE_COMMENT : // String literals with escape sequences
-IDENTIFER : escaped_str
-STRING_LITERAL : "Tab\tNewLine\nBackslash\\DoubleQuote\"SingleQuote\'"
-SINGLE_LINE_COMMENT : // Complex expressions
-IDENTIFER : complex
-PUNCTUATORS : <<
-PUNCTUATORS : &
-PUNCTUATORS : ^
-PUNCTUATORS : |
-SINGLE_LINE_COMMENT : // Special characters in strings and char literals
-IDENTIFER : special
-CHARACTER_CONSTANT : '\n'
-IDENTIFER : special_str
-STRING_LITERAL : "This string contains a \\ backslash and a \" double quote"
-SINGLE_LINE_COMMENT : // Nested and combined expressions
-IDENTIFER : combined
-PUNCTUATORS : /
-PUNCTUATORS : &&
-PUNCTUATORS : ||
-PUNCTUATORS : ==
-PUNCTUATORS : ?
-PUNCTUATORS : :
-SINGLE_LINE_COMMENT : // Floating-point operations
-IDENTIFER : result_double
-FLOATING_CONSTANT : 3.0
-IDENTIFER : complex_expr
-SINGLE_LINE_COMMENT : // Switch case statement with multiple cases
-KEYWORDS : switch
-KEYWORDS : case
-KEYWORDS : break
-KEYWORDS : default
-SINGLE_LINE_COMMENT : // More complex function declarations
-IDENTIFER : print_hello
-IDENTIFER : printf
-STRING_LITERAL : "Hello, World!\n"
+KEYWORDS  :  auto
+KEYWORDS  :  int
+IDENTIFER  :  x
+INTEGER_CONSTANT  :  10
+KEYWORDS  :  const
+KEYWORDS  :  float
+IDENTIFER  :  pi
+FLOATING_CONSTANT  :  3.14
+KEYWORDS  :  void
+IDENTIFER  :  func
+KEYWORDS  :  return
+KEYWORDS  :  unsigned
+KEYWORDS  :  long
+IDENTIFER  :  ul
+INTEGER_CONSTANT  :  100
+KEYWORDS  :  static
+IDENTIFER  :  arr
+INTEGER_CONSTANT  :  5
+INTEGER_CONSTANT  :  1
+INTEGER_CONSTANT  :  2
+INTEGER_CONSTANT  :  3
+INTEGER_CONSTANT  :  4
+KEYWORDS  :  volatile
+KEYWORDS  :  double
+IDENTIFER  :  d
+FLOATING_CONSTANT  :  0.0
+IDENTIFER  :  main
+IDENTIFER  :  y
+IDENTIFER  :  result
+KEYWORDS  :  char
+IDENTIFER  :  ch
+CHARACTER_CONSTANT  :  'a'
+KEYWORDS  :  _Bool
+IDENTIFER  :  isTrue
+KEYWORDS  :  _Complex
+IDENTIFER  :  z
+FLOATING_CONSTANT  :  1.0
+FLOATING_CONSTANT  :  2.0
+IDENTIFER  :  c
+CHARACTER_CONSTANT  :  'Bfae'
+IDENTIFER  :  num
+IDENTIFER  :  num2
+FLOATING_CONSTANT  :  10.5e-2
+IDENTIFER  :  str
+STRING_LITERAL  :  "Hello, World!"
+IDENTIFER  :  ull
+INTEGER_CONSTANT  :  123456789012345
+IDENTIFER  :  scientific
+FLOATING_CONSTANT  :  1.23e10
+IDENTIFER  :  a
+IDENTIFER  :  b
+INTEGER_CONSTANT  :  20
+KEYWORDS  :  if
+KEYWORDS  :  else
+KEYWORDS  :  for
+IDENTIFER  :  i
+INTEGER_CONSTANT  :  0
+KEYWORDS  :  while
+IDENTIFER  :  escaped_str
+STRING_LITERAL  :  "Tab\tNewLine\nBackslash\\DoubleQuote\"SingleQuote\'"
+IDENTIFER  :  complex
+IDENTIFER  :  special
+CHARACTER_CONSTANT  :  '\n'
+IDENTIFER  :  special_str
+STRING_LITERAL  :  "This string contains a \\ backslash and a \" double quote"
+IDENTIFER  :  combined
+IDENTIFER  :  result_double
+FLOATING_CONSTANT  :  3.0
+IDENTIFER  :  complex_expr
+KEYWORDS  :  switch
+KEYWORDS  :  case
+KEYWORDS  :  break
+KEYWORDS  :  default
+IDENTIFER  :  print_hello
+IDENTIFER  :  printf
+STRING_LITERAL  :  "Hello, World!\n"
 
 
 

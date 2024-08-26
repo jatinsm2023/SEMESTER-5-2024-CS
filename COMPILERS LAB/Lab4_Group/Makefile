@@ -1,13 +1,13 @@
-load: run
+run:  lexyyc aout
+	./a.out < ass3_22cs30032_22cs10073_test.c > output
+	rm -f lex.yy.c a.out 
 
-lex.yy.c: ass3_22cs30032_22cs10073.l
-	flex ass3_22cs30032_22cs10073.l
+lexyyc: ass3_22cs10073_22cs30032.l
+	flex ass3_22cs10073_22cs30032.l
 
-a.out: lex.yy.c
+aout: ass3_22cs30032_22cs10073.c
 	gcc ass3_22cs30032_22cs10073.c -o a.out
 
-run: a.out
-	./a.out < ass3_22cs30032_22cs10073_test.c
 
 clean:
-	rm -f lex.yy.c a.out
+	rm -f lex.yy.c a.out 

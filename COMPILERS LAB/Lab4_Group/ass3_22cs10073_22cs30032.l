@@ -23,16 +23,15 @@ exponent_part           [eE]{sign}?{digit_sequence}
 fractional_constant     ({digit_sequence}?\.{digit_sequence})|({digit_sequence}\.)
 floating_constant       ({fractional_constant}{exponent_part}?)|{digit_sequence}{exponent_part}
 
-escape_sequence        "\'"|"\""|"\?"|"\\"|"\b"|"\\n"|"\r"|"\v"|"\a"|"\t"|"\f"
-c_char                  [^("\\"|"\'"|"\n")]|{escape_sequence}
-c_char_sequence         {c_char}+
-character_constant      \'({c_char_sequence})\'
+escape_sequence         \\(['"\\?abfnrtv])
+c_char                  [^'\\\n]|{escape_sequence}
+character_constant       '({c_char}*)'
 
 const                   {integer_constant}|{floating_constant}|{character_constant}
 
-s_char                  [^("\\"|"\""|"\n")]|{escape_sequence}
-s_char_sequence         {s_char}+
-string_literal          "\""{s_char_sequence}"\""
+s_char                  [^"\\\n]|{escape_sequence}
+string_literal          \"({s_char}*)\"
+
 
 punctuator              "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-"|"~"|"!"|"/"|"%"|"<<"|">>"|"<"|">"|"<="|">="|"=="|"!="|"^"|"|"|"&&"|"||"|"?"|":"|";"|"..."|"="|"*="|"/="|"%="|"+="|"-="|"<<="|">>="|"&="|"^="|"|="|","|"#"
 
@@ -56,5 +55,6 @@ singlelinecomment       "//"[^\n]*
 {integer_constant}          {return INTEGER_CONSTANT;}
 {floating_constant}         {return FLOATING_CONSTANT;}
 {space}                     {}
+
 
 %%

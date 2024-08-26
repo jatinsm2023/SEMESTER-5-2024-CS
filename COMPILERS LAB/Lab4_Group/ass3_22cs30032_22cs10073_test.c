@@ -14,12 +14,13 @@ int main()
     char ch = 'a';
     _Bool isTrue = 1;
     _Complex z = 1.0 + 2.0;
- 
-    // Constants
+    char c = 'Bfae';
+    // Constants    
     int num = 100;
     float num2 = 10.5e-2;
-    char c = 'A';
     char *str = "Hello, World!";
+    char *str = "Hello, World!";
+    
     unsigned long long ull = 123456789012345;
     
     float scientific = 1.23e10;
