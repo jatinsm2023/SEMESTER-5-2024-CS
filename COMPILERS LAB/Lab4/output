@@ -1,0 +1,28 @@
+variable a is set to 5
+variable b is set to 5
+variable c is set to 35
+Standalone expression evaluates to 3150
+variable a is set to 2
+variable b is set to 9
+Standalone expression evaluates to 5
+variable tmp is set to 9
+variable b is set to 43
+variable a is set to 9
+Standalone expression evaluates to 5
+variable tmp is set to 43
+variable b is set to 206
+variable a is set to 43
+Standalone expression evaluates to 5
+Error: syntax error
+
+
+Table
+ID : a	43
+ID : b	206
+ID : c	35
+ID : -num-	-1
+ID : tmp	43
+ID : -num-	5
+ID : -num-	2
+
+
