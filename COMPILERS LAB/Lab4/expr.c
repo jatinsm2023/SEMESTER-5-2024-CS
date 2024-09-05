@@ -3,7 +3,7 @@
 
 struct symbolTable setnum(struct symbolTable table, int num) {
     for (int i = 0; i < table.size; i++) {
-        if (table.arr[i].val == num) {
+        if (!strcmp(table.arr[i].id,"-num-")  && table.arr[i].val == num) {
             return table;
         }
     }
@@ -57,9 +57,90 @@ int evalexpr(char op, int a, int b) {
         case '+': return a + b;
         case '-': return a - b;
         case '*': return a * b;
-        case '/': return a / b;
-        case '%': return a % b;
+        case '/':  if(b == 0){ printf("--Division by zero is not permited--\n"); exit(-1); } return a / b;
+        case '%': if(b == 0){ printf("--Division by zero is not permited--\n"); exit(-1); } return a % b;
         case '^': return (int)pow(a, b);
         default: return 0; 
     }
+}
+
+int getidindex(struct symbolTable table, char *s){
+    for (int i = 0; i < table.size; i++) {
+        if (!strcmp(table.arr[i].id, s)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int getnumindex(struct symbolTable table, int num){
+    for (int i = 0; i < table.size; i++) {
+        if (!strcmp(table.arr[i].id,"-num-") &&   table.arr[i].val == num) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+struct TreeNode *createleaf(char op, int indx) {
+    struct TreeNode *node = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+    node->op = op;
+    node->indx = indx;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+struct TreeNode *createNode(char op, struct TreeNode *left, struct TreeNode *right) {
+    struct TreeNode *node = (struct TreeNode *)malloc(sizeof(struct TreeNode));
+    node->op = op;
+    node->indx = -1;
+    node->left = left;
+    node->right = right;
+    return node;
+}
+
+int evalTree(struct TreeNode *root, struct symbolTable table) {
+    if (root->left == NULL && root->right == NULL) {
+        return table.arr[root->indx].val;
+    }
+    int a = evalTree(root->left, table);
+    int b = evalTree(root->right, table);
+    return evalexpr(root->op, a, b);
+}
+
+
+
+struct TreeStack *push(struct TreeStack *stack, struct TreeNode *node) {
+    struct TreeStack *newNode = (struct TreeStack *)malloc(sizeof(struct TreeStack));
+    newNode->node = node;
+    newNode->next = stack;
+    return newNode;
+}
+
+struct TreeStack *pop(struct TreeStack *stack) {
+    struct TreeStack *temp = stack;
+    stack = stack->next;
+    free(temp);
+    return stack;
+}
+
+struct TreeNode *top(struct TreeStack *stack) {
+    return stack->node;
+}
+
+int isEmpty(struct TreeStack *stack) {
+    return stack == NULL;
+}
+
+void printTree(struct TreeNode *root, int num) {
+    if (root == NULL) {
+        return;
+    }
+    for (int i = 0; i < num; i++) {
+        printf("-->");
+    }
+    printf("(%c, %d)\n", root->op, root->indx);
+    printTree(root->left, num+1);
+    printTree(root->right,num+1);
 }

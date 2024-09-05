@@ -14,15 +14,3 @@ variable b is set to 206
 variable a is set to 43
 Standalone expression evaluates to 5
 Error: syntax error
-
-
-Table
-ID : a	43
-ID : b	206
-ID : c	35
-ID : -num-	-1
-ID : tmp	43
-ID : -num-	5
-ID : -num-	2
-
-
