@@ -1,0 +1,2 @@
+iverilog tb_alu.v top_alu.v sl8.v sra.v srl8.v ham8.v adder2.v adder3.v dec4.v inc4.v mux16.v mux8.v mux4.v a8.v add8.v adder1.v and8.v b8.v div8.v mul8.v mux2.v not8.v or8.v sub8.v xor8.v
+./a.out
