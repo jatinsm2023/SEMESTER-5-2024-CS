@@ -14,7 +14,6 @@ module b8(
     assign out[7] = b[7];
 endmodule
 
-
 module b32(
     input [31:0] b,
     output [31:0] out

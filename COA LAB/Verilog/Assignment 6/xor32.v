@@ -15,7 +15,6 @@ module xor8(
     xor xor7(out[7],a[7],b[7]);
 endmodule
 
-
 module xor32(
     input [31:0] a,
     input [31:0] b,

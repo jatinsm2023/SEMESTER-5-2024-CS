@@ -1,2 +1,2 @@
-iverilog tb_alu.v top_alu.v sl8.v sra.v srl8.v ham8.v adder2.v adder3.v dec4.v inc4.v mux16.v mux8.v mux4.v a8.v add8.v adder1.v and8.v b8.v div8.v mul8.v mux2.v not8.v or8.v sub8.v xor8.v
+iverilog tb_reg.v top_reg.v  registerbank.v  mux32.v  top_alu.v sr32.v sra32.v srl32.v ham32.v dec4.v inc4.v mux16.v mux8.v mux4.v a32.v add32.v and32.v b32.v div32.v mul32.v mux2.v not32.v or32.v sub32.v xor32.v
 ./a.out
