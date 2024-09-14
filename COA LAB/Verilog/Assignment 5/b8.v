@@ -13,3 +13,4 @@ module b8(
     assign out[6] = b[6];
     assign out[7] = b[7];
 endmodule
+

@@ -19,7 +19,7 @@ endmodule
 module add8(
     input [7:0] a,
     input [7:0] b,
-    output reg [7:0] out
+    output [7:0] out
     );
     wire [8:0] carry;
     assign carry[0] = 0;
