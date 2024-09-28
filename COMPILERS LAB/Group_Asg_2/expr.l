@@ -24,9 +24,14 @@ string_literal          \"({s_char}*)\"
 
 
 space                   [ \t\n]
-
+commentstart           "/*"
+commentend             "*/"
+commmentbody            [^*]|(\*[^/])
+comment                 {commentstart}{commmentbody}*{commentend}
+line_comment            "//"[^\n]*
 
 %%
+
 "extern"                   {return EXTERN;}
 "auto"                     {return AUTO;}
 "static"                   {return STATIC;}
@@ -99,17 +104,25 @@ space                   [ \t\n]
 "^"                        {return XOR;}
 ">"                        {return GREATER;}
 "<"                        {return LESS;}
-
+"("                        {return LEFTPAR;}
+")"                        {return RIGHTPAR;}
+"{"                        {return LEFTBRACE;}
+"}"                        {return RIGHTBRACE;}
+"["                        {return LEFTBRACKET;}
+"]"                        {return RIGHTBRACKET;}
+":"                        {return COLON;}
+"?"                        {return QUESTIONMARK;}
 
 
 {Identifier}                {yylval.sval = strdup(yytext); return IDENTIFIER;}
 {string_literal}            {yylval.sval = strdup(yytext); return STRING_LITERAL;}
 {floating_constant}         {yylval.fval = atof(yytext); return FLO_CONSTANT;}
-{integer_constant}          {yylval.ival = atoi(yytext); return INT_CONSTANT;}
+{integer_constant}          {yylval.ival = atoi(yytext);return INT_CONSTANT;}
 
 {space}                     {}
 .                         {}
-
+{comment}                  {}
+{line_comment}             {}
 
 %%
 

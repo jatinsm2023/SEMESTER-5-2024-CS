@@ -15,7 +15,7 @@
             int value;
             float fvalue;
             char *svalue;
-        };
+        }all;
         struct _tree_node* child[10];
         int child_count;
     }tree_node;
@@ -32,7 +32,7 @@
     tree_node* node;
 }
 
-%start translation_unit
+%start START
 
 %token<sval> IDENTIFIER
 %token<fval> FLO_CONSTANT
@@ -52,6 +52,7 @@
 %token PLUS MINUS MULTIPLY DIV MOD TILDA NOT AND EQUAL SEMICOLON COMMA DOT LESS GREATER OR XOR
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
+%token LEFTPAR RIGHTPAR LEFTBRACE RIGHTBRACE LEFTBRACKET RIGHTBRACKET COLON QUESTIONMARK
 
 %%      
 
@@ -60,18 +61,18 @@ primary_expression:IDENTIFIER                                               {tre
         | FLO_CONSTANT                                                      {tree_node* arr[] = {create_leaf_node("FLO_CONSTANT",-1,$1,NULL)};$$=create_int_node("primary_expression",arr,1);}
         | INT_CONSTANT                                                      {tree_node* arr[] = {create_leaf_node("INT_CONSTANT",$1,-1,NULL)};$$=create_int_node("primary_expression",arr,1);}
         | STRING_LITERAL                                                    {tree_node* arr[] = {create_leaf_node("STR_CONST",-1,-1,$1)};$$=create_int_node("primary_expression",arr,1);}
-        | '(' expression ')'                                                {tree_node* arr[] = {create_leaf_node("(",1,-1,"("),$2,create_leaf_node(")",-1,-1,")")};$$=create_int_node("primary_expression",arr,3);}
+        | LEFTPAR expression RIGHTPAR                                       {tree_node* arr[] = {create_leaf_node("(",1,-1,"("),$2,create_leaf_node(")",-1,-1,")")};$$=create_int_node("primary_expression",arr,3);}
         ;
 
 postfix_expression: primary_expression                                      {tree_node* arr[] = {$1};$$=create_int_node("postfix_expression",arr,1);}
-        | postfix_expression '[' expression ']'                             {tree_node* arr[]= {$1,create_leaf_node("[",-1,-1,"["),$3,create_leaf_node("]",-1,-1,"]")};$$=create_int_node("postfix_expression",arr,4);}
-        | postfix_expression '(' argument_expression_list ')'               {tree_node* arr[] = {$1,create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")")};$$=create_int_node("postfix_expression",arr,4);}
+        | postfix_expression LEFTBRACKET expression RIGHTBRACKET                             {tree_node* arr[]= {$1,create_leaf_node("[",-1,-1,"["),$3,create_leaf_node("]",-1,-1,"]")};$$=create_int_node("postfix_expression",arr,4);}
+        | postfix_expression LEFTPAR argument_expression_list RIGHTPAR               {tree_node* arr[] = {$1,create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")")};$$=create_int_node("postfix_expression",arr,4);}
         | postfix_expression DOT IDENTIFIER                                 {tree_node* arr[] = {$1,create_leaf_node(".",1,-1,"."),create_leaf_node("IDENTIFIER",-1,-1,$3)};$$=create_int_node("postfix_expression",arr,3);}
         | postfix_expression ARROW IDENTIFIER                             {tree_node* arr[] = {$1,create_leaf_node("->",1,-1,"->"),create_leaf_node("IDENTIFIER",-1,-1,$3)};$$=create_int_node("postfix_expression",arr,3);}
         | postfix_expression INCREMENT                                      {tree_node* arr[] = {$1,create_leaf_node("INCREMENT",-1,-1,"++")};$$=create_int_node("postfix_expression",arr,2);}
         | postfix_expression DECREMENT                                    {tree_node* arr[] = {$1,create_leaf_node("DECREMENT",-1,-1,"-")};$$=create_int_node("postfix_expression",arr,2);}
-        | '(' type_name ')' '{' initializer_list '}'                        {tree_node* arr[] = {create_leaf_node("(",1,-1,"("),$2,create_leaf_node(")",-1,-1,")"),create_leaf_node("{",-1,-1,"{"),$5,create_leaf_node("}",-1,-1,"}")};$$=create_int_node("postfix_expression",arr,6);}
-        | '(' type_name ')' '{' initializer_list COMMA '}'                    {tree_node* arr[] = {create_leaf_node("(",1,-1,"("),$2,create_leaf_node(")",-1,-1,")"),create_leaf_node("{",-1,-1,"{"),$5,create_leaf_node(",",-1,-1,","),create_leaf_node("}",-1,-1,"}")};$$=create_int_node("postfix_expression",arr,6);}
+        | LEFTPAR type_name RIGHTPAR LEFTBRACE initializer_list RIGHTBRACE                        {tree_node* arr[] = {create_leaf_node("(",1,-1,"("),$2,create_leaf_node(")",-1,-1,")"),create_leaf_node("{",-1,-1,"{"),$5,create_leaf_node("}",-1,-1,"}")};$$=create_int_node("postfix_expression",arr,6);}
+        | LEFTPAR type_name RIGHTPAR LEFTBRACE initializer_list COMMA RIGHTBRACE                    {tree_node* arr[] = {create_leaf_node("(",1,-1,"("),$2,create_leaf_node(")",-1,-1,")"),create_leaf_node("{",-1,-1,"{"),$5,create_leaf_node(",",-1,-1,","),create_leaf_node("}",-1,-1,"}")};$$=create_int_node("postfix_expression",arr,6);}
         ;
 
 argument_expression_list: assignment_expression                             {tree_node* arr[] = {$1};$$=create_int_node("argument_expression_list",arr,1);}
@@ -84,7 +85,7 @@ unary_expression: postfix_expression                                        {tre
         | DECREMENT unary_expression                                      {tree_node* arr[] = {create_leaf_node("DECREMENT",-1,-1,"--"),$2};$$=create_int_node("unary_expression",arr,3);}
         | unary_operator cast_expression                                    {tree_node* arr[] = {$1,$2};$$=create_int_node("unary_expression",arr,2);}
         | SIZEOF unary_expression                                           {tree_node* arr[] = {create_leaf_node("SIZEOF",-1,-1,"SIZEOF"),$2};$$=create_int_node("unary_expression",arr,2);}
-        | SIZEOF '(' type_name ')'                                          {tree_node* arr[] = {create_leaf_node("SIZEOF",-1,-1,"SIZEOF"),create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")")};$$=create_int_node("unary_expression",arr,4);}
+        | SIZEOF LEFTPAR type_name RIGHTPAR                                          {tree_node* arr[] = {create_leaf_node("SIZEOF",-1,-1,"SIZEOF"),create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")")};$$=create_int_node("unary_expression",arr,4);}
         ;
 
 unary_operator: PLUS                                                         {tree_node* arr[]= {create_leaf_node("+",-1,-1,"+")};$$=create_int_node("unary_operator",arr,1);}
@@ -96,7 +97,7 @@ unary_operator: PLUS                                                         {tr
         ;
 
 cast_expression: unary_expression                                           {tree_node* arr[] = {$1};$$=create_int_node("cast_expression",arr,1);}
-        | '(' type_name ')' cast_expression                                 {tree_node* arr[] = {create_leaf_node("(",1,-1,"("),$2,create_leaf_node(")",-1,-1,")"),$4};$$=create_int_node("cast_expression",arr,4);}
+        | LEFTPAR type_name RIGHTPAR cast_expression                                 {tree_node* arr[] = {create_leaf_node("(",1,-1,"("),$2,create_leaf_node(")",-1,-1,")"),$4};$$=create_int_node("cast_expression",arr,4);}
         ;
 
 multiplicative_expression: cast_expression                                  {tree_node* arr[] = {$1};$$=create_int_node("multiplicative_expression",arr,1);}
@@ -147,7 +148,7 @@ logical_OR_expression: logical_AND_expression                               {tre
         ;
 
 conditional_expression: logical_OR_expression                               {tree_node* arr[] = {$1};$$=create_int_node("conditional_expression",arr,1);}
-        | logical_OR_expression '?' expression ':' conditional_expression   {tree_node* arr[] = {$1,create_leaf_node("?",-1,-1,"?"),$3,create_leaf_node(":",-1,-1,":"),$5};$$=create_int_node("conditional_expression",arr,5);}
+        | logical_OR_expression QUESTIONMARK expression COLON conditional_expression   {tree_node* arr[] = {$1,create_leaf_node("?",-1,-1,"?"),$3,create_leaf_node(":",-1,-1,":"),$5};$$=create_int_node("conditional_expression",arr,5);}
         ;
 
 assignment_expression: conditional_expression                               {tree_node* arr[] = {$1};$$=create_int_node("assignment_expression",arr,1);}
@@ -167,7 +168,7 @@ assignment_operator: EQUAL                                                    {t
         | OREQUAL                                                           {tree_node* arr[]={create_leaf_node("OPERATOR",-1,-1,"|=")};$$=create_int_node("assignment_operator",arr,1);}
         ;
         
-expression: assignment_expression                                           {tree_node* arr[] = {$1};$$=create_int_node("expression",arr,1); printtree($$,0);}
+expression: assignment_expression                                           {tree_node* arr[] = {$1};$$=create_int_node("expression",arr,1); }
         | expression COMMA assignment_expression                              {tree_node* arr[] = {$1,create_leaf_node("COMMA",1,-1,","),$3};$$=create_int_node("expression",arr,3);}
         ;
 constant_expression: conditional_expression                                 {tree_node* arr[] = {$1};$$=create_int_node("constant_expression",arr,1);} 
@@ -236,25 +237,25 @@ declarator: pointer direct_declarator                                        {tr
         ;
 
 direct_declarator: IDENTIFIER                                                {tree_node* arr[] = {create_leaf_node("IDENTIFIER",-1,-1,$1)};$$=create_int_node("direct_declarator",arr,1);}
-        | '(' declarator ')'                                                {tree_node* arr[] = {create_leaf_node("(",1,-1,"("),$2,create_leaf_node(")",-1,-1,")")};$$=create_int_node("direct_declarator",arr,3);}
-        | direct_declarator '[' ']'                                         {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,3);}
-        | direct_declarator '[' type_qualifier_list ']'                     {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),$3,create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,4);}
-        | direct_declarator '[' assignment_expression ']'                   {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),$3,create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,4);}
-        | direct_declarator '[' type_qualifier_list assignment_expression ']' {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),$3,$4,create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,5);}
-        | direct_declarator '[' STATIC type_qualifier_list assignment_expression ']' {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),create_leaf_node("STATIC",-1,-1,"STATIC"),$4,$5,create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,6);}
-        | direct_declarator '[' STATIC assignment_expression ']'           {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),create_leaf_node("STATIC",-1,-1,"STATIC"),$4,create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,5);}
-        | direct_declarator '[' type_qualifier_list STATIC assignment_expression ']' {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),$3,create_leaf_node("STATIC",-1,-1,"STATIC"),$5,create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,6);}
-        | direct_declarator '[' '*' ']'                                     {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),create_leaf_node("*",-1,-1,"*"),create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,4);}
-        | direct_declarator '[' type_qualifier_list '*' ']'                 {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),$3,create_leaf_node("*",-1,-1,"*"),create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,5);}
-        | direct_declarator '(' parameter_type_list ')'                     {tree_node* arr[] = {$1,create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")")};$$=create_int_node("direct_declarator",arr,4);}
-        | direct_declarator '(' identifier_list ')'                         {tree_node* arr[] = {$1,create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")")};$$=create_int_node("direct_declarator",arr,4);}
-        | direct_declarator '(' ')'                                         {tree_node* arr[] = {$1,create_leaf_node("(",1,-1,"("),create_leaf_node(")",-1,-1,")")};$$=create_int_node("direct_declarator",arr,3);}
+        | LEFTPAR declarator RIGHTPAR                                                {tree_node* arr[] = {create_leaf_node("(",1,-1,"("),$2,create_leaf_node(")",-1,-1,")")};$$=create_int_node("direct_declarator",arr,3);}
+        | direct_declarator LEFTBRACKET RIGHTBRACKET                                         {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,3);}
+        | direct_declarator LEFTBRACKET type_qualifier_list RIGHTBRACKET                     {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),$3,create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,4);}
+        | direct_declarator LEFTBRACKET assignment_expression RIGHTBRACKET                   {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),$3,create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,4);}
+        | direct_declarator LEFTBRACKET type_qualifier_list assignment_expression RIGHTBRACKET {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),$3,$4,create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,5);}
+        | direct_declarator LEFTBRACKET STATIC type_qualifier_list assignment_expression RIGHTBRACKET {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),create_leaf_node("STATIC",-1,-1,"STATIC"),$4,$5,create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,6);}
+        | direct_declarator LEFTBRACKET STATIC assignment_expression RIGHTBRACKET           {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),create_leaf_node("STATIC",-1,-1,"STATIC"),$4,create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,5);}
+        | direct_declarator LEFTBRACKET type_qualifier_list STATIC assignment_expression RIGHTBRACKET {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),$3,create_leaf_node("STATIC",-1,-1,"STATIC"),$5,create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,6);}
+        | direct_declarator LEFTBRACKET MULTIPLY RIGHTBRACKET                                     {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),create_leaf_node("*",-1,-1,"*"),create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,4);}
+        | direct_declarator LEFTBRACKET type_qualifier_list MULTIPLY RIGHTBRACKET                 {tree_node* arr[] = {$1,create_leaf_node("[",-1,-1,"["),$3,create_leaf_node("*",-1,-1,"*"),create_leaf_node("]",-1,-1,"]")};$$=create_int_node("direct_declarator",arr,5);}
+        | direct_declarator LEFTPAR parameter_type_list RIGHTPAR                     {tree_node* arr[] = {$1,create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")")};$$=create_int_node("direct_declarator",arr,4);}
+        | direct_declarator LEFTPAR identifier_list RIGHTPAR                         {tree_node* arr[] = {$1,create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")")};$$=create_int_node("direct_declarator",arr,4);}
+        | direct_declarator LEFTPAR RIGHTPAR                                         {tree_node* arr[] = {$1,create_leaf_node("(",1,-1,"("),create_leaf_node(")",-1,-1,")")};$$=create_int_node("direct_declarator",arr,3);}
         ;
 
-pointer: '*'                                                             {tree_node* arr[] = {create_leaf_node("*",-1,-1,"*")};$$=create_int_node("pointer",arr,1);}
-        | '*' type_qualifier_list                                         {tree_node* arr[] = {create_leaf_node("*",-1,-1,"*"),$2};$$=create_int_node("pointer",arr,2);}
-        | '*' pointer                                                     {tree_node* arr[] = {create_leaf_node("*",-1,-1,"*"),$2};$$=create_int_node("pointer",arr,2);}
-        | '*' type_qualifier_list pointer                                 {tree_node* arr[] = {create_leaf_node("*",-1,-1,"*"),$2,$3};$$=create_int_node("pointer",arr,3);}
+pointer: MULTIPLY                                                             {tree_node* arr[] = {create_leaf_node("*",-1,-1,"*")};$$=create_int_node("pointer",arr,1);}
+        | MULTIPLY type_qualifier_list                                         {tree_node* arr[] = {create_leaf_node("*",-1,-1,"*"),$2};$$=create_int_node("pointer",arr,2);}
+        | MULTIPLY pointer                                                     {tree_node* arr[] = {create_leaf_node("*",-1,-1,"*"),$2};$$=create_int_node("pointer",arr,2);}
+        | MULTIPLY type_qualifier_list pointer                                 {tree_node* arr[] = {create_leaf_node("*",-1,-1,"*"),$2,$3};$$=create_int_node("pointer",arr,3);}
         ;
         
 type_qualifier_list: type_qualifier                                        {tree_node* arr[] = {$1};$$=create_int_node("type_qualifier_list",arr,1);}
@@ -281,8 +282,8 @@ type_name: specifier_qualifier_list                                        {tree
         ;
 
 initializer: assignment_expression                                        {tree_node* arr[] = {$1};$$=create_int_node("initializer",arr,1);}
-        | '{' initializer_list '}'                                         {tree_node* arr[] = {create_leaf_node("{",-1,-1,"{"),$2,create_leaf_node("}",-1,-1,"}")};$$=create_int_node("initializer",arr,3);}
-        | '{' initializer_list COMMA '}'                                     {tree_node* arr[] = {create_leaf_node("{",-1,-1,"{"),$2,create_leaf_node(",",-1,-1,","),create_leaf_node("}",-1,-1,"}")};$$=create_int_node("initializer",arr,4);}
+        | LEFTBRACE initializer_list RIGHTBRACE                                         {tree_node* arr[] = {create_leaf_node("{",-1,-1,"{"),$2,create_leaf_node("}",-1,-1,"}")};$$=create_int_node("initializer",arr,3);}
+        | LEFTBRACE initializer_list COMMA RIGHTBRACE                                     {tree_node* arr[] = {create_leaf_node("{",-1,-1,"{"),$2,create_leaf_node(",",-1,-1,","),create_leaf_node("}",-1,-1,"}")};$$=create_int_node("initializer",arr,4);}
         ;
 
 initializer_list: initializer                                              {tree_node* arr[] = {$1};$$=create_int_node("initializer_list",arr,1);}
@@ -298,7 +299,7 @@ designator_list: designator                                               {tree_
         | designator_list designator                                       {tree_node* arr[] = {$1,$2};$$=create_int_node("designator_list",arr,2);}
         ;
 
-designator: '[' constant_expression ']'                                    {tree_node* arr[] = {create_leaf_node("[",-1,-1,"["),$2,create_leaf_node("]",-1,-1,"]")};$$=create_int_node("designator",arr,3);}
+designator: LEFTBRACKET constant_expression RIGHTBRACKET                                    {tree_node* arr[] = {create_leaf_node("[",-1,-1,"["),$2,create_leaf_node("]",-1,-1,"]")};$$=create_int_node("designator",arr,3);}
         | DOT IDENTIFIER                                                    {tree_node* arr[] = {create_leaf_node(".",1,-1,"."),create_leaf_node("IDENTIFIER",-1,-1,$2)};$$=create_int_node("designator",arr,2);}
         ;
 
@@ -312,13 +313,13 @@ statement: labeled_statement                                               {tree
         | jump_statement                                                  {tree_node* arr[] = {$1};$$=create_int_node("statement",arr,1);}
         ;
 
-labeled_statement: IDENTIFIER ':' statement                                {tree_node* arr[] = {create_leaf_node("IDENTIFIER",-1,-1,$1),create_leaf_node(":",-1,-1,":"),$3};$$=create_int_node("labeled_statement",arr,3);}
-        | CASE constant_expression ':' statement                          {tree_node* arr[] = {create_leaf_node("CASE",-1,-1,"CASE"),$2,create_leaf_node(":",-1,-1,":"),$4};$$=create_int_node("labeled_statement",arr,4);}
-        | DEFAULT ':' statement                                          {tree_node* arr[] = {create_leaf_node("DEFAULT",-1,-1,"DEFAULT"),create_leaf_node(":",-1,-1,":"),$3};$$=create_int_node("labeled_statement",arr,3);}
+labeled_statement: IDENTIFIER COLON statement                                {tree_node* arr[] = {create_leaf_node("IDENTIFIER",-1,-1,$1),create_leaf_node(":",-1,-1,":"),$3};$$=create_int_node("labeled_statement",arr,3);}
+        | CASE constant_expression COLON statement                          {tree_node* arr[] = {create_leaf_node("CASE",-1,-1,"CASE"),$2,create_leaf_node(":",-1,-1,":"),$4};$$=create_int_node("labeled_statement",arr,4);}
+        | DEFAULT COLON statement                                          {tree_node* arr[] = {create_leaf_node("DEFAULT",-1,-1,"DEFAULT"),create_leaf_node(":",-1,-1,":"),$3};$$=create_int_node("labeled_statement",arr,3);}
         ;
 
-compound_statement: '{' '}'                                               {tree_node* arr[] = {create_leaf_node("{",-1,-1,"{"),create_leaf_node("}",-1,-1,"}")};$$=create_int_node("compound_statement",arr,2);}
-        | '{' block_item_list '}'                                        {tree_node* arr[] = {create_leaf_node("{",-1,-1,"{"),$2,create_leaf_node("}",-1,-1,"}")};$$=create_int_node("compound_statement",arr,3);}
+compound_statement: LEFTBRACE RIGHTBRACE                                               {tree_node* arr[] = {create_leaf_node("{",-1,-1,"{"),create_leaf_node("}",-1,-1,"}")};$$=create_int_node("compound_statement",arr,2);}
+        | LEFTBRACE block_item_list RIGHTBRACE                                        {tree_node* arr[] = {create_leaf_node("{",-1,-1,"{"),$2,create_leaf_node("}",-1,-1,"}")};$$=create_int_node("compound_statement",arr,3);}
         ;
 
 block_item_list: block_item                                               {tree_node* arr[] = {$1};$$=create_int_node("block_item_list",arr,1);}
@@ -333,15 +334,15 @@ expression_statement: SEMICOLON                                                 
         | expression SEMICOLON                                                 {tree_node* arr[] = {$1,create_leaf_node(";",-1,-1,";")};$$=create_int_node("expression_statement",arr,2);}
         ;
 
-selection_statement: IF '(' expression ')' statement   %prec LOWER_THAN_ELSE                  {tree_node* arr[] = {create_leaf_node("IF",-1,-1,"IF"),create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")"),$5};$$=create_int_node("selection_statement",arr,5);}
-        | IF '(' expression ')' statement ELSE statement  %prec ELSE               {tree_node* arr[] = {create_leaf_node("IF",-1,-1,"IF"),create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")"),$5,create_leaf_node("ELSE",-1,-1,"ELSE"),$7};$$=create_int_node("selection_statement",arr,7);}
-        | SWITCH '(' expression ')' statement                            {tree_node* arr[] = {create_leaf_node("SWITCH",-1,-1,"SWITCH"),create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")"),$5};$$=create_int_node("selection_statement",arr,5);}
+selection_statement: IF LEFTPAR expression RIGHTPAR statement   %prec LOWER_THAN_ELSE                  {tree_node* arr[] = {create_leaf_node("IF",-1,-1,"IF"),create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")"),$5};$$=create_int_node("selection_statement",arr,5);}
+        | IF LEFTPAR expression RIGHTPAR statement ELSE statement  %prec ELSE               {tree_node* arr[] = {create_leaf_node("IF",-1,-1,"IF"),create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")"),$5,create_leaf_node("ELSE",-1,-1,"ELSE"),$7};$$=create_int_node("selection_statement",arr,7);}
+        | SWITCH LEFTPAR expression RIGHTPAR statement                            {tree_node* arr[] = {create_leaf_node("SWITCH",-1,-1,"SWITCH"),create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")"),$5};$$=create_int_node("selection_statement",arr,5);}
         ;
 
-iteration_statement: WHILE '(' expression ')' statement                    {tree_node* arr[] = {create_leaf_node("WHILE",-1,-1,"WHILE"),create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")"),$5};$$=create_int_node("iteration_statement",arr,5);}
-        | DO statement WHILE '(' expression ')' SEMICOLON                       {tree_node* arr[] = {create_leaf_node("DO",-1,-1,"DO"),$2,create_leaf_node("WHILE",-1,-1,"WHILE"),create_leaf_node("(",1,-1,"("),$5,create_leaf_node(")",-1,-1,")"),create_leaf_node(";",-1,-1,";")};$$=create_int_node("iteration_statement",arr,7);}
-        | FOR '(' expressionopt SEMICOLON expressionopt SEMICOLON expressionopt ')' statement {tree_node* arr[] = {create_leaf_node("FOR",-1,-1,"FOR"),create_leaf_node("(",1,-1,"("),$3,create_leaf_node(";",-1,-1,";"),$5,create_leaf_node(";",-1,-1,";"),$7,create_leaf_node(")",-1,-1,")"),$9};$$=create_int_node("iteration_statement",arr,9);}
-        | FOR '(' declaration expressionopt SEMICOLON expressionopt ')' statement {tree_node* arr[] = {create_leaf_node("FOR",-1,-1,"FOR"),create_leaf_node("(",1,-1,"("),$3,$4,create_leaf_node(";",-1,-1,";"),$6,create_leaf_node(")",-1,-1,")"),$8};$$=create_int_node("iteration_statement",arr,8);}
+iteration_statement: WHILE LEFTPAR expression RIGHTPAR statement                    {tree_node* arr[] = {create_leaf_node("WHILE",-1,-1,"WHILE"),create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")"),$5};$$=create_int_node("iteration_statement",arr,5);}
+        | DO statement WHILE LEFTPAR expression RIGHTPAR SEMICOLON                       {tree_node* arr[] = {create_leaf_node("DO",-1,-1,"DO"),$2,create_leaf_node("WHILE",-1,-1,"WHILE"),create_leaf_node("(",1,-1,"("),$5,create_leaf_node(")",-1,-1,")"),create_leaf_node(";",-1,-1,";")};$$=create_int_node("iteration_statement",arr,7);}
+        | FOR LEFTPAR expressionopt SEMICOLON expressionopt SEMICOLON expressionopt RIGHTPAR statement {tree_node* arr[] = {create_leaf_node("FOR",-1,-1,"FOR"),create_leaf_node("(",1,-1,"("),$3,create_leaf_node(";",-1,-1,";"),$5,create_leaf_node(";",-1,-1,";"),$7,create_leaf_node(")",-1,-1,")"),$9};$$=create_int_node("iteration_statement",arr,9);}
+        | FOR LEFTPAR declaration expressionopt SEMICOLON expressionopt RIGHTPAR statement {tree_node* arr[] = {create_leaf_node("FOR",-1,-1,"FOR"),create_leaf_node("(",1,-1,"("),$3,$4,create_leaf_node(";",-1,-1,";"),$6,create_leaf_node(")",-1,-1,")"),$8};$$=create_int_node("iteration_statement",arr,8);}
         ;
 
 expressionopt:                                                              {tree_node* arr[] = {create_leaf_node("EMPTY",-1,-1,"EMPTY")};$$=create_int_node("expressionopt",arr,1);}
@@ -357,9 +358,11 @@ jump_statement: GOTO IDENTIFIER SEMICOLON                                       
 
 
 /* External Definitions */
+START:  translation_unit  {printtree($1,0);}
+        ;
 
-translation_unit: external_declaration                                      {tree_node* arr[] = {$1};$$=create_int_node("translation_unit",arr,1);printtree($$,0);}
-        | translation_unit external_declaration                           {tree_node* arr[] = {$1,$2};$$=create_int_node("translation_unit",arr,2);}
+translation_unit:  translation_unit external_declaration                           {tree_node* arr[] = {$1,$2};$$=create_int_node("translation_unit",arr,2);}
+        | external_declaration                                      {tree_node* arr[] = {$1};$$=create_int_node("translation_unit",arr,1);}
         ;
 
 external_declaration: function_definition                                   {tree_node* arr[] = {$1};$$=create_int_node("external_declaration",arr,1);}
