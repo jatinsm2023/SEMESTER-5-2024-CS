@@ -1,0 +1,56 @@
+translation_unit
+-->external_declaration
+-->-->declaration
+-->-->-->declaration_specifiers
+-->-->-->-->type_specifier
+-->-->-->-->-->(INT)
+-->-->-->init_declarator_list
+-->-->-->-->init_declarator_list
+-->-->-->-->-->init_declarator
+-->-->-->-->-->-->declarator
+-->-->-->-->-->-->-->direct_declarator
+-->-->-->-->-->-->-->-->(IDENTIFIER, a)
+-->-->-->-->-->-->(=)
+-->-->-->-->-->-->initializer
+-->-->-->-->-->-->-->assignment_expression
+-->-->-->-->-->-->-->-->conditional_expression
+-->-->-->-->-->-->-->-->-->logical_OR_expression
+-->-->-->-->-->-->-->-->-->-->logical_AND_expression
+-->-->-->-->-->-->-->-->-->-->-->inclusive_OR_expression
+-->-->-->-->-->-->-->-->-->-->-->-->exclusive_OR_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->AND_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->equality_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->relational_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->shift_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->additive_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->multiplicative_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->cast_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->unary_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->postfix_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->primary_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->(INT_CONSTANT, 0)
+-->-->-->-->(,)
+-->-->-->-->init_declarator
+-->-->-->-->-->declarator
+-->-->-->-->-->-->direct_declarator
+-->-->-->-->-->-->-->(IDENTIFIER, b)
+-->-->-->-->-->(=)
+-->-->-->-->-->initializer
+-->-->-->-->-->-->assignment_expression
+-->-->-->-->-->-->-->conditional_expression
+-->-->-->-->-->-->-->-->logical_OR_expression
+-->-->-->-->-->-->-->-->-->logical_AND_expression
+-->-->-->-->-->-->-->-->-->-->inclusive_OR_expression
+-->-->-->-->-->-->-->-->-->-->-->exclusive_OR_expression
+-->-->-->-->-->-->-->-->-->-->-->-->AND_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->equality_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->relational_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->shift_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->additive_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->multiplicative_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->cast_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->unary_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->postfix_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->primary_expression
+-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->(INT_CONSTANT, 0)
+-->-->-->(;)

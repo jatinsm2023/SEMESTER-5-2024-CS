@@ -39,6 +39,11 @@ tree_node* create_leaf_node(char* name,int ivalue,float fvalue,char* svalue){
         node->value = -1;
         node->svalue = svalue;
     }
+    else{
+        node->name = name;
+        node->value = -1;
+        node->svalue = svalue;
+    }
     return node;
 }
 
@@ -47,11 +52,20 @@ void printtree(tree_node* node,int level){
         printf("-->");
     }
     if(node->child_count==0){
-        if(node->svalue!=NULL){
-            printf("(%s %s)\n",node->name,node->svalue);
+        if(node->name=="IDENTIFIER"){
+            printf("(%s, %s)\n",node->name,node->svalue);
+        }
+        else if(node->name=="FLO_CONSTANT"){
+            printf("(%s, %f)\n",node->name,node->fvalue);
+        }
+        else if(node->name=="INT_CONSTANT"){
+            printf("(%s, %d)\n",node->name,node->value);
+        }
+        else if(node->name=="STR_CONST"){
+            printf("(%s, %s)\n",node->name,node->svalue);
         }
         else{
-            printf("(%s %d)\n",node->name,node->value);
+            printf("(%s)\n",node->svalue);
         }
     }
     else{
@@ -63,7 +77,7 @@ void printtree(tree_node* node,int level){
 }
 
 int main(){
-    // debug
+    // // debug
     // yydebug = 1;
     yyparse();
     return 0;

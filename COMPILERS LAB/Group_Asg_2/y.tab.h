@@ -91,7 +91,45 @@ extern int yydebug;
     GOTO = 292,                    /* GOTO  */
     CONTINUE = 293,                /* CONTINUE  */
     BREAK = 294,                   /* BREAK  */
-    RETURN = 295                   /* RETURN  */
+    RETURN = 295,                  /* RETURN  */
+    ARROW = 296,                   /* ARROW  */
+    INCREMENT = 297,               /* INCREMENT  */
+    DECREMENT = 298,               /* DECREMENT  */
+    LEFTSHIFT = 299,               /* LEFTSHIFT  */
+    RIGHTSHIFT = 300,              /* RIGHTSHIFT  */
+    LESSEQUAL = 301,               /* LESSEQUAL  */
+    GREATEREQUAL = 302,            /* GREATEREQUAL  */
+    DOUBLEEQUAL = 303,             /* DOUBLEEQUAL  */
+    NOTEQUAL = 304,                /* NOTEQUAL  */
+    DOUBLEAND = 305,               /* DOUBLEAND  */
+    DOUBLEOR = 306,                /* DOUBLEOR  */
+    PLUSEQUAL = 307,               /* PLUSEQUAL  */
+    MINUSEQUAL = 308,              /* MINUSEQUAL  */
+    MULTIPLYEQUAL = 309,           /* MULTIPLYEQUAL  */
+    DIVEQUAL = 310,                /* DIVEQUAL  */
+    MODEQUAL = 311,                /* MODEQUAL  */
+    LEFTSHIFTEQUAL = 312,          /* LEFTSHIFTEQUAL  */
+    RIGHTSHIFTEQUAL = 313,         /* RIGHTSHIFTEQUAL  */
+    ANDEQUAL = 314,                /* ANDEQUAL  */
+    OREQUAL = 315,                 /* OREQUAL  */
+    XOREQUAL = 316,                /* XOREQUAL  */
+    PLUS = 317,                    /* PLUS  */
+    MINUS = 318,                   /* MINUS  */
+    MULTIPLY = 319,                /* MULTIPLY  */
+    DIV = 320,                     /* DIV  */
+    MOD = 321,                     /* MOD  */
+    TILDA = 322,                   /* TILDA  */
+    NOT = 323,                     /* NOT  */
+    AND = 324,                     /* AND  */
+    EQUAL = 325,                   /* EQUAL  */
+    SEMICOLON = 326,               /* SEMICOLON  */
+    COMMA = 327,                   /* COMMA  */
+    DOT = 328,                     /* DOT  */
+    LESS = 329,                    /* LESS  */
+    GREATER = 330,                 /* GREATER  */
+    OR = 331,                      /* OR  */
+    XOR = 332,                     /* XOR  */
+    LOWER_THAN_ELSE = 333          /* LOWER_THAN_ELSE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -138,6 +176,44 @@ extern int yydebug;
 #define CONTINUE 293
 #define BREAK 294
 #define RETURN 295
+#define ARROW 296
+#define INCREMENT 297
+#define DECREMENT 298
+#define LEFTSHIFT 299
+#define RIGHTSHIFT 300
+#define LESSEQUAL 301
+#define GREATEREQUAL 302
+#define DOUBLEEQUAL 303
+#define NOTEQUAL 304
+#define DOUBLEAND 305
+#define DOUBLEOR 306
+#define PLUSEQUAL 307
+#define MINUSEQUAL 308
+#define MULTIPLYEQUAL 309
+#define DIVEQUAL 310
+#define MODEQUAL 311
+#define LEFTSHIFTEQUAL 312
+#define RIGHTSHIFTEQUAL 313
+#define ANDEQUAL 314
+#define OREQUAL 315
+#define XOREQUAL 316
+#define PLUS 317
+#define MINUS 318
+#define MULTIPLY 319
+#define DIV 320
+#define MOD 321
+#define TILDA 322
+#define NOT 323
+#define AND 324
+#define EQUAL 325
+#define SEMICOLON 326
+#define COMMA 327
+#define DOT 328
+#define LESS 329
+#define GREATER 330
+#define OR 331
+#define XOR 332
+#define LOWER_THAN_ELSE 333
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -150,7 +226,7 @@ union YYSTYPE
     char *sval;
     tree_node* node;
 
-#line 154 "y.tab.h"
+#line 230 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
