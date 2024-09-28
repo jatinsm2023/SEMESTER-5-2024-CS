@@ -38,7 +38,6 @@
 %token<fval> FLO_CONSTANT
 %token<ival> INT_CONSTANT
 %token<sval> STRING_LITERAL
-%token PLUS MINUS MULTIPLY AND TILDA NOT
 %token SIZEOF
 %type <node>  primary_expression postfix_expression argument_expression_list unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression equality_expression AND_expression exclusive_OR_expression inclusive_OR_expression logical_AND_expression logical_OR_expression conditional_expression assignment_expression expression constant_expression
 %type <node> unary_operator assignment_operator
@@ -66,8 +65,8 @@ postfix_expression: primary_expression                                      {tre
         | postfix_expression '(' argument_expression_list ')'               {tree_node* arr[] = {$1,create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")")};$$=create_int_node("postfix_expression",arr,4);}
         | postfix_expression '.' IDENTIFIER                                 {tree_node* arr[] = {$1,create_leaf_node(".",1,-1,"."),create_leaf_node("IDENTIFIER",-1,-1,$3)};$$=create_int_node("postfix_expression",arr,3);}
         | postfix_expression '-' '>' IDENTIFIER                             {tree_node* arr[] = {$1,create_leaf_node("->",1,-1,"->"),create_leaf_node("IDENTIFIER",-1,-1,$4)};$$=create_int_node("postfix_expression",arr,3);}
-        | postfix_expression PLUS PLUS                                      {tree_node* arr[] = {$1,create_leaf_node("PLUS",-1,-1,"+"),create_leaf_node("PLUS",-1,-1,"+")};$$=create_int_node("postfix_expression",arr,3);}
-        | postfix_expression MINUS MINUS                                    {tree_node* arr[] = {$1,create_leaf_node("MINUS",-1,-1,"-"),create_leaf_node("MINUS",-1,-1,"-")};$$=create_int_node("postfix_expression",arr,3);}
+        | postfix_expression '-' '-'                                      {tree_node* arr[] = {$1,create_leaf_node("PLUS",-1,-1,"+"),create_leaf_node("PLUS",-1,-1,"+")};$$=create_int_node("postfix_expression",arr,3);}
+        | postfix_expression '+' '+'                                    {tree_node* arr[] = {$1,create_leaf_node("MINUS",-1,-1,"-"),create_leaf_node("MINUS",-1,-1,"-")};$$=create_int_node("postfix_expression",arr,3);}
         | '(' type_name ')' '{' initializer_list '}'                        {tree_node* arr[] = {create_leaf_node("(",1,-1,"("),$2,create_leaf_node(")",-1,-1,")"),create_leaf_node("{",-1,-1,"{"),$5,create_leaf_node("}",-1,-1,"}")};$$=create_int_node("postfix_expression",arr,6);}
         | '(' type_name ')' '{' initializer_list ',' '}'                    {tree_node* arr[] = {create_leaf_node("(",1,-1,"("),$2,create_leaf_node(")",-1,-1,")"),create_leaf_node("{",-1,-1,"{"),$5,create_leaf_node(",",-1,-1,","),create_leaf_node("}",-1,-1,"}")};$$=create_int_node("postfix_expression",arr,6);}
         ;
@@ -78,19 +77,19 @@ argument_expression_list: assignment_expression                             {tre
 
 
 unary_expression: postfix_expression                                        {tree_node* arr[] = {$1};$$=create_int_node("unary_expression",arr,1);}
-        | PLUS PLUS unary_expression                                        {tree_node* arr[] = {create_leaf_node("PLUS",-1,-1,"+"),create_leaf_node("PLUS",-1,-1,"+"),$3};$$=create_int_node("unary_expression",arr,3);}
-        | MINUS MINUS unary_expression                                      {tree_node* arr[] = {create_leaf_node("MINUS",-1,-1,"-"),create_leaf_node("MINUS",-1,-1,"-"),$3};$$=create_int_node("unary_expression",arr,3);}
+        | '+' '+' unary_expression                                        {tree_node* arr[] = {create_leaf_node("PLUS",-1,-1,"+"),create_leaf_node("PLUS",-1,-1,"+"),$3};$$=create_int_node("unary_expression",arr,3);}
+        | '-' '-' unary_expression                                      {tree_node* arr[] = {create_leaf_node("MINUS",-1,-1,"-"),create_leaf_node("MINUS",-1,-1,"-"),$3};$$=create_int_node("unary_expression",arr,3);}
         | unary_operator cast_expression                                    {tree_node* arr[] = {$1,$2};$$=create_int_node("unary_expression",arr,2);}
         | SIZEOF unary_expression                                           {tree_node* arr[] = {create_leaf_node("SIZEOF",-1,-1,"SIZEOF"),$2};$$=create_int_node("unary_expression",arr,2);}
         | SIZEOF '(' type_name ')'                                          {tree_node* arr[] = {create_leaf_node("SIZEOF",-1,-1,"SIZEOF"),create_leaf_node("(",1,-1,"("),$3,create_leaf_node(")",-1,-1,")")};$$=create_int_node("unary_expression",arr,4);}
         ;
 
-unary_operator:PLUS                                                         {tree_node* arr[]= {create_leaf_node("+",-1,-1,"+")};$$=create_int_node("unary_operator",arr,1);}
-        | MINUS                                                             {tree_node* arr[]= {create_leaf_node("-",-1,-1,"-")};$$=create_int_node("unary_operator",arr,1);}
-        | NOT                                                               {tree_node* arr[]= {create_leaf_node("!",-1,-1,"!")};$$=create_int_node("unary_operator",arr,1);}
-        | TILDA                                                             {tree_node* arr[]= {create_leaf_node("~",-1,-1,"~")};$$=create_int_node("unary_operator",arr,1);}
-        | AND                                                               {tree_node* arr[]= {create_leaf_node("&",-1,-1,"&")};$$=create_int_node("unary_operator",arr,1);}
-        | MULTIPLY                                                          {tree_node* arr[]= {create_leaf_node("*",-1,-1,"*")};$$=create_int_node("unary_operator",arr,1);}
+unary_operator:'+'                                                         {tree_node* arr[]= {create_leaf_node("+",-1,-1,"+")};$$=create_int_node("unary_operator",arr,1);}
+        | '-'                                                            {tree_node* arr[]= {create_leaf_node("-",-1,-1,"-")};$$=create_int_node("unary_operator",arr,1);}
+        | '!'                                                               {tree_node* arr[]= {create_leaf_node("!",-1,-1,"!")};$$=create_int_node("unary_operator",arr,1);}
+        | '~'                                                             {tree_node* arr[]= {create_leaf_node("~",-1,-1,"~")};$$=create_int_node("unary_operator",arr,1);}
+        | '&'                                                               {tree_node* arr[]= {create_leaf_node("&",-1,-1,"&")};$$=create_int_node("unary_operator",arr,1);}
+        | '*'                                                          {tree_node* arr[]= {create_leaf_node("*",-1,-1,"*")};$$=create_int_node("unary_operator",arr,1);}
         ;
 
 cast_expression: unary_expression                                           {tree_node* arr[] = {$1};$$=create_int_node("cast_expression",arr,1);}

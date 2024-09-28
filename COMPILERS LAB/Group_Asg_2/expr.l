@@ -75,12 +75,6 @@ singlelinecomment       "//"[^\n]*
 
 "sizeof"                    {return SIZEOF;}  
 {Identifier}                {yylval.sval = strdup(yytext); return IDENTIFIER;}
-"+"                        {return PLUS;}
-"-"                        {return MINUS;}
-"*"                        {return MULTIPLY;}
-"&"                         {return AND;}
-"~"                         {return TILDA;}
-"!"                         {return NOT;}
 {string_literal}            {yylval.sval = strdup(yytext); return STRING_LITERAL;}
 {floating_constant}         {yylval.fval = atof(yytext); return FLO_CONSTANT;}
 {integer_constant}          {yylval.ival = atoi(yytext); return INT_CONSTANT;}
