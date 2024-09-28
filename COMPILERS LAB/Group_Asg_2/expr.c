@@ -1,5 +1,9 @@
 #include "lex.yy.c"
-extern int yyparse();
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <regex.h>
+
 
 tree_node* create_int_node(char* name,tree_node* child[],int child_count){
     tree_node* node = (tree_node*)malloc(sizeof(tree_node));
@@ -13,6 +17,8 @@ tree_node* create_int_node(char* name,tree_node* child[],int child_count){
 
 tree_node* create_leaf_node(char* name,int ivalue,float fvalue,char* svalue){
     tree_node* node = (tree_node*)malloc(sizeof(tree_node));
+    node->child_count = 0;
+    
     if(!strcmp(name,"IDENTIFIER")){
         node->name = name;
         node->value = -1;
@@ -38,7 +44,7 @@ tree_node* create_leaf_node(char* name,int ivalue,float fvalue,char* svalue){
 
 void printtree(tree_node* node,int level){
     for(int i=0;i<level;i++){
-        printf("-");
+        printf("-->");
     }
     if(node->child_count==0){
         if(node->svalue!=NULL){
@@ -49,7 +55,7 @@ void printtree(tree_node* node,int level){
         }
     }
     else{
-        printf("(%s)\n",node->name);
+        printf("%s\n",node->name);
         for(int i=0;i<node->child_count;i++){
             printtree(node->child[i],level+1);
         }
@@ -57,6 +63,8 @@ void printtree(tree_node* node,int level){
 }
 
 int main(){
+    // debug
+    // yydebug = 1;
     yyparse();
     return 0;
 }

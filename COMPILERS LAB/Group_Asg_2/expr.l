@@ -1,7 +1,7 @@
 %{
     #include "y.tab.c"
-    void yyerror();
-    int yylex();
+    #include "y.tab.h"
+   
 %}
 
 keywords                "auto"|"break"|"case"|"char"|"const"|"continue"|"default"|"do"|"double"|"else"|"enum"|"extern"|"float"|"for"|"goto"|"if"|"inline"|"int"|"long"|"register"|"restrict"|"return"|"short"|"signed"|"sizeof"|"static"|"struct"|"switch"|"typedef"|"union"|"unsigned"|"void"|"volatile"|"while"|"_Bool"|"_Complex"|"_Imaginary"
@@ -38,8 +38,40 @@ multicomment            {commentstart}{commmentbody}*{commentend}
 singlelinecomment       "//"[^\n]*
 
 
-
 %%
+"extern"                   {return EXTERN;}
+"auto"                     {return AUTO;}
+"static"                   {return STATIC;}
+"register"                 {return REGISTER;}
+"void"                     {return VOID;}
+"char"                     {return CHAR;}
+"short"                    {return SHORT;}
+"int"                      {return INT;}
+"long"                     {return LONG;}
+"float"                    {return FLOAT;}
+"double"                   {return DOUBLE;}
+"signed"                   {return SIGNED;}
+"unsigned"                 {return UNSIGNED;}
+"_Bool"                    {return BOOL;}
+"_Complex"                 {return COMPLEX;}
+"_Imaginary"               {return IMAGINARY;}
+"const"                    {return CONST;}
+"volatile"                 {return VOLATILE;}
+"restrict"                 {return RESTRICT;}
+"inline"                   {return INLINE;}
+"..."                      {return ELLIPSIS;}
+"return"                   {return RETURN;}
+"goto"                     {return GOTO;}
+"continue"                 {return CONTINUE;}
+"break"                    {return BREAK;}
+"case"                     {return CASE;}
+"default"                  {return DEFAULT;}
+"if"                       {return IF;}
+"else"                     {return ELSE;}
+"switch"                   {return SWITCH;}
+"while"                    {return WHILE;}
+"do"                       {return DO;}
+"for"                      {return FOR;}
 
 "sizeof"                    {return SIZEOF;}  
 {Identifier}                {yylval.sval = strdup(yytext); return IDENTIFIER;}

@@ -64,7 +64,40 @@ extern int yydebug;
     AND = 265,                     /* AND  */
     TILDA = 266,                   /* TILDA  */
     NOT = 267,                     /* NOT  */
-    SIZEOF = 268                   /* SIZEOF  */
+    SIZEOF = 268,                  /* SIZEOF  */
+    EXTERN = 269,                  /* EXTERN  */
+    STATIC = 270,                  /* STATIC  */
+    AUTO = 271,                    /* AUTO  */
+    REGISTER = 272,                /* REGISTER  */
+    VOID = 273,                    /* VOID  */
+    CHAR = 274,                    /* CHAR  */
+    SHORT = 275,                   /* SHORT  */
+    INT = 276,                     /* INT  */
+    LONG = 277,                    /* LONG  */
+    FLOAT = 278,                   /* FLOAT  */
+    DOUBLE = 279,                  /* DOUBLE  */
+    SIGNED = 280,                  /* SIGNED  */
+    UNSIGNED = 281,                /* UNSIGNED  */
+    BOOL = 282,                    /* BOOL  */
+    COMPLEX = 283,                 /* COMPLEX  */
+    IMAGINARY = 284,               /* IMAGINARY  */
+    CONST = 285,                   /* CONST  */
+    RESTRICT = 286,                /* RESTRICT  */
+    VOLATILE = 287,                /* VOLATILE  */
+    INLINE = 288,                  /* INLINE  */
+    ELLIPSIS = 289,                /* ELLIPSIS  */
+    CASE = 290,                    /* CASE  */
+    DEFAULT = 291,                 /* DEFAULT  */
+    IF = 292,                      /* IF  */
+    ELSE = 293,                    /* ELSE  */
+    SWITCH = 294,                  /* SWITCH  */
+    WHILE = 295,                   /* WHILE  */
+    DO = 296,                      /* DO  */
+    FOR = 297,                     /* FOR  */
+    GOTO = 298,                    /* GOTO  */
+    CONTINUE = 299,                /* CONTINUE  */
+    BREAK = 300,                   /* BREAK  */
+    RETURN = 301                   /* RETURN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -84,19 +117,52 @@ extern int yydebug;
 #define TILDA 266
 #define NOT 267
 #define SIZEOF 268
+#define EXTERN 269
+#define STATIC 270
+#define AUTO 271
+#define REGISTER 272
+#define VOID 273
+#define CHAR 274
+#define SHORT 275
+#define INT 276
+#define LONG 277
+#define FLOAT 278
+#define DOUBLE 279
+#define SIGNED 280
+#define UNSIGNED 281
+#define BOOL 282
+#define COMPLEX 283
+#define IMAGINARY 284
+#define CONST 285
+#define RESTRICT 286
+#define VOLATILE 287
+#define INLINE 288
+#define ELLIPSIS 289
+#define CASE 290
+#define DEFAULT 291
+#define IF 292
+#define ELSE 293
+#define SWITCH 294
+#define WHILE 295
+#define DO 296
+#define FOR 297
+#define GOTO 298
+#define CONTINUE 299
+#define BREAK 300
+#define RETURN 301
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 29 "expr.y"
+#line 28 "expr.y"
 
     int ival;
     float fval;
     char *sval;
     tree_node* node;
 
-#line 100 "y.tab.h"
+#line 166 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
