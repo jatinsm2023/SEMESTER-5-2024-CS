@@ -22,7 +22,7 @@
 
     tree_node* create_leaf_node(char* name,int value,float fvalue,char* svalue);
     tree_node* create_int_node(char* name,tree_node* child[],int child_count);
-   void printtree(tree_node* node,int level);
+   void printtree(tree_node* node);
 %}
 
 %union{
@@ -358,7 +358,7 @@ jump_statement: GOTO IDENTIFIER SEMICOLON                                       
 
 
 /* External Definitions */
-START:  translation_unit  {printtree($1,0);}
+START:  translation_unit  {printtree($1);}
         ;
 
 translation_unit:  translation_unit external_declaration                           {tree_node* arr[] = {$1,$2};$$=create_int_node("translation_unit",arr,2);}

@@ -350,6 +350,8 @@
 <Punctuator, ) >
 <Punctuator, ; >
 <Punctuator, } >
+<Punctuator, - >
+<Integer Constant, 42 >
 
 
 
@@ -432,6 +434,7 @@ KEYWORDS  :  default
 IDENTIFER  :  print_hello
 IDENTIFER  :  printf
 STRING_LITERAL  :  "Hello, World!\n"
+INTEGER_CONSTANT  :  42
 
 
 

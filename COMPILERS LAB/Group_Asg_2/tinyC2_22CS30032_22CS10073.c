@@ -42,7 +42,8 @@ tree_node* create_leaf_node(char* name,int ivalue,float fvalue,char* svalue){
     return node;
 }
 
-void printtree(tree_node* node,int level){
+
+void printtree_helper(tree_node* node,int level){
     for(int i=0;i<level;i++){
         printf("-->");
     }
@@ -66,11 +67,15 @@ void printtree(tree_node* node,int level){
     else{
         printf("%s\n",node->name);
         for(int i=0;i<node->child_count;i++){
-            printtree(node->child[i],level+1);
+            printtree_helper(node->child[i],level+1);
         }
     }
 }
 
+void printtree(tree_node* node){
+    printf("\n- Parse Tree - \n\n\n");
+    printtree_helper(node,0);
+}
 int main(){
     // // debug
     // yydebug = 1;
