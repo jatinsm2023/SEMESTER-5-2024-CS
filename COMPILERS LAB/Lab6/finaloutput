@@ -9,4 +9,16 @@
 +++ MEM[1] is set to 43
 +++ MEM[0] is set to 9
 +++ Standalone expression evaluates to 5
++++ MEM[3] is set to 43
++++ MEM[1] is set to 206
++++ MEM[0] is set to 43
++++ Standalone expression evaluates to 5
 +++ Standalone expression evaluates to 24571189
++++ MEM[4] is set to -11
++++ MEM[5] is set to 19
++++ MEM[6] is set to -12
++++ MEM[6] is set to -4
++++ MEM[7] is set to -11
++++ Standalone expression evaluates to 29
++++ MEM[7] is set to 43
++++ Standalone expression evaluates to 528

@@ -50,11 +50,13 @@
             }
             temp = temp->next;
         }
-        return -1;
+        
+        printf("// Warning - Variable %s is not intialized\n// Assigned %s to MEM[0];\n", name,name);
+        return 0;
     }
     
     typedef struct argvals{
-        int whattype; // 0 for id, 1 for num, 2 for expr
+        int type; // 0 for id, 1 for num, 2 for expr
         int regidx;
         int value;
     }Arg;
@@ -78,8 +80,8 @@
 PROGRAM :   STMT PROGRAM  
         |   STMT
         ;
-STMT    :   SETSTMT
-        |   EXPRSTMT
+STMT    :   SETSTMT {reglocation = 2;}
+        |   EXPRSTMT {reglocation = 2;}
         ;
 SETSTMT :   '(' set ID NUM ')'  {
                     head = addTable($3);
@@ -104,61 +106,69 @@ EXPRSTMT:   EXPR   {
                     printf("\teprn(R, %d);\n", $1);
             }
         ;
-EXPR    :   '(' OP ARG ARG ')'  {
+EXPR    :   '(' OP ARG {
+                if($3->type==2){
+                    reglocation++;
+                }
+            }
+            ARG ')'  {
+                if($3->type==2){
+                    reglocation--;
+                }
                 if($2=='^'){
                     printf("\tR[%d] = pwr(",reglocation);
                     // if ARG is ID
-                    if($3->whattype == 0){
+                    if($3->type == 0){
                         printf("R[%d],", $3->regidx);
                     }
                     // if ARG is NUM
-                    else if($3->whattype == 1){
+                    else if($3->type == 1){
                         printf("%d,", $3->value);
                     }
                     // if ARG is EXPR
-                    else if($3->whattype == 2){
+                    else if($3->type == 2){
                         printf("R[%d],", $3->regidx);
                     }
                     // if ARG is ID
-                    if($4->whattype == 0){
-                        printf("R[%d]);\n", $4->regidx);
+                    if($5->type == 0){
+                        printf("R[%d]);\n", $5->regidx);
                     }
-                    else if($4->whattype == 1){
-                        printf("%d);\n", $4->value);
+                    else if($5->type == 1){
+                        printf("%d);\n", $5->value);
                     }
-                    else if($4->whattype == 2){
-                        printf("R[%d]);\n", $4->regidx);
+                    else if($5->type == 2){
+                        printf("R[%d]);\n", $5->regidx);
                     }
-                    $$ = reglocation++;
                 } else{
                     printf("\tR[%d] = ", reglocation);
                     // if ARG is ID
-                    if($3->whattype == 0){
+                    if($3->type == 0){
                         printf("R[%d] %c ", $3->regidx, $2);
                     }
                     // if ARG is NUM
-                    else if($3->whattype == 1){
+                    else if($3->type == 1){
                         printf("%d %c ", $3->value, $2);
                     }
                     // if ARG is EXPR
-                    else if($3->whattype == 2){
+                    else if($3->type == 2){
                         printf("R[%d] %c ", $3->regidx, $2);
                     }
                     // if ARG is ID
-                    if($4->whattype == 0){
-                        printf("R[%d];\n", $4->regidx);
+                    if($5->type == 0){
+                        printf("R[%d];\n", $5->regidx);
                     }
                     // if ARG is NUM
-                    else if($4->whattype == 1){
-                        printf("%d;\n", $4->value);
+                    else if($5->type == 1){
+                        printf("%d;\n", $5->value);
                     }
                     // if ARG is EXPR
-                    else if($4->whattype == 2){
-                        printf("R[%d];\n", $4->regidx);
+                    else if($5->type == 2){
+                        printf("R[%d];\n", $5->regidx);
                     }
-                   
-                    $$ = reglocation++;
                 }
+
+                $$ = reglocation;
+               
             }
         ;
 OP      :   '+'     {
@@ -185,7 +195,7 @@ ARG     :   ID      {
                     printf("\tR[0] = MEM[%d];\n", getlocation($1));
                     rzeroused = 1;
                     Arg *temp = (Arg *)malloc(sizeof(Arg));
-                    temp->whattype = 0;
+                    temp->type = 0;
                     temp->regidx = 0;
                     temp->value = -1;
                     $$ = temp;
@@ -193,7 +203,7 @@ ARG     :   ID      {
                 else {
                     printf("\tR[1] = MEM[%d];\n", getlocation($1));
                     Arg *temp = (Arg *)malloc(sizeof(Arg));
-                    temp->whattype = 0;
+                    temp->type = 0;
                     temp->regidx = 1;
                     temp->value = -1;
                     $$ = temp;
@@ -201,18 +211,16 @@ ARG     :   ID      {
                 }
             }
         |   NUM    {
-                    printf("\tR[%d] = %d;\n", reglocation, $1);
                     Arg *temp = (Arg *)malloc(sizeof(Arg));
-                    temp->whattype = 1;
+                    temp->type = 1;
                     temp->regidx = -1;
                     temp->value = $1;
                     $$ = temp;
             }
         
         |   EXPR   { 
-                    // printf("\tR[%d] = R[%d];\n", reglocation, $1);
                     Arg *temp = (Arg *)malloc(sizeof(Arg));
-                    temp->whattype = 2;
+                    temp->type = 2;
                     temp->regidx = $1;
                     temp->value = -1;
                     $$ = temp;
