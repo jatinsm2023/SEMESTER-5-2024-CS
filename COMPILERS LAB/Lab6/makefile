@@ -7,4 +7,4 @@ all:
 	./output > finaloutput
 
 clean:
-	rm lex.yy.c y.tab.c y.tab.h 
+	rm lex.yy.c y.tab.c y.tab.h *.out
