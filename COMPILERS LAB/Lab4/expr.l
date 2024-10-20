@@ -1,7 +1,5 @@
 %{
     #include "y.tab.h"   
-    int yylex();
-      void yyerror(char* s);
 %}
 
 ID  [_a-zA-Z][_a-zA-Z0-9]*

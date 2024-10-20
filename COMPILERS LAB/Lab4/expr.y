@@ -5,6 +5,9 @@
     #include <string.h>
     #include <stdlib.h>
     #include "expr.h" 
+    int yylex();
+        void yyerror(const char *s);    
+
     
     struct symbolTable table;
     struct TreeNode *root;
@@ -59,6 +62,6 @@ int main() {
     return 0;
 }
 
-void yyerror(char* s) {
-    printf("Error: %s\n", s);
+void yyerror(const char *s) {
+    fprintf(stderr, "%s\n", s);
 }

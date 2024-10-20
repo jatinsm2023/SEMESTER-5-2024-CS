@@ -14,5 +14,9 @@ void mprn(int MEM[], int idx) {
 }
 
 void eprn(int R[], int idx) {
+    if(idx>=12){
+        printf("+++ Error: R[%d] is out of bounds\n", idx);
+        exit(1);
+    }
     printf("+++ Standalone expression evaluates to %d\n", R[idx]);
 }

@@ -18,7 +18,7 @@
     TreeNode *create_leaf_node(char *name, int val, char *inherited);
     TreeNode *create_node(char *name, char *inherited, int val, TreeNode *arr[], int child_num);
     char *int_to_string(int num);
-        
+
     TreeNode *root = NULL;
 %}
 

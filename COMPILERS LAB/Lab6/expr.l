@@ -1,8 +1,6 @@
 %{
     #include "y.tab.h"   
     #include "y.tab.c"
-    #include "y.tab.h"
-   
 %}
 
 ID  [_a-zA-Z][_a-zA-Z0-9]*
