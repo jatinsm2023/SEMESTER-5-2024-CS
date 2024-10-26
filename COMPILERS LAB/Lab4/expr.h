@@ -12,7 +12,7 @@ struct symbole {
 
 
 struct symbolTable {
-    struct symbole arr[100000];
+    struct symbole arr[10000];
     int size;
 };
 
