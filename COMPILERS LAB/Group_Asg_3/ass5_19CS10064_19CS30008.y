@@ -1,6 +1,4 @@
 %{
-        #define YYDEBUG 1
-        extern int yydebug;
        #include <bits/stdc++.h>
       #include "ass5_19CS10064_19CS30008_translator.h"
         using namespace std;
@@ -28,7 +26,7 @@
 %start translation_unit
 
 %token<syent> IDENTIFIER
-%token<charval> FLO_CONSTANT
+%token<charval> FLO_CONSTANT CHAR_CONSTANT
 %token<ival> INT_CONSTANT
 %token<charval> STRING_LITERAL
 %token SIZEOF
@@ -50,6 +48,7 @@
         conditional_expression
         assignment_expression
         expression_statement
+
 %type <stmt>
         statement
         compound_statement
@@ -63,7 +62,7 @@
         block_item_list_opt
 
 %type <syenttype> pointer
-%type<syent>  initializer
+%type<syent>  initializer constant
 %type<syent> direct_declarator init_declarator declarator 
 
 %type<arr> postfix_expression unary_expression cast_expression
@@ -88,15 +87,9 @@ primary_expression:IDENTIFIER {
                 $$->loc = $1; // symbol table entry
                 $$->type = "non_bool";
         }
-        | FLO_CONSTANT {
+        | constant {
                 $$ = new expression();
-                $$->loc = symboltable::gentemp(new symboltype("float"),string($1));
-                emit("=",$$->loc->name,$1);
-        }
-        | INT_CONSTANT {
-                $$ = new expression();
-                $$->loc = symboltable::gentemp(new symboltype("int"),to_string($1));
-                emit("=",$$->loc->name,to_string($1));
+                $$->loc = $1;
         }
         | STRING_LITERAL {
                 $$ = new expression();
@@ -108,6 +101,23 @@ primary_expression:IDENTIFIER {
         }                                      
         ;
 
+constant: 
+        INT_CONSTANT
+        {
+            $$ = symboltable::gentemp(new symboltype("int"), int_to_string($1));   // Create a new temporary, and store the value in that temporary
+            emit("=", $$->name, $1);
+        }
+        | FLO_CONSTANT
+        {
+            $$ = symboltable::gentemp(new symboltype("float"), string($1));     // Create a new temporary, and store the value in that temporary
+            emit("=", $$->name, string($1));
+        }
+        |CHAR_CONSTANT
+        {
+            $$ = symboltable::gentemp(new symboltype("float"), string($1));     // Create a new temporary, and store the value in that temporary
+            emit("=", $$->name, string($1));
+        }
+        ;
 postfix_expression: primary_expression {
                 $$ = new arraytype();
                 $$->arr = $1->loc;
@@ -142,14 +152,14 @@ postfix_expression: primary_expression {
         | postfix_expression INCREMENT  {
                 $$ = new arraytype();
                 $$->arr = symboltable::gentemp($1->arr->type,"");
-                emit("=", $1->arr->name,$$->arr->name);
-                emit("+",$$->arr->name,$1->arr->name,"1");
+                emit("=", $$->arr->name,$1->arr->name);
+                emit("+",$1->arr->name,$1->arr->name,"1");
         }                                    
         | postfix_expression DECREMENT {
                 $$ = new arraytype();
                 $$->arr = symboltable::gentemp($1->arr->type,"");
-                emit("=", $1->arr->name,$$->arr->name);
-                emit("-",$$->arr->name,$1->arr->name,"1");
+                emit("=", $$->arr->name,$1->arr->name);
+                emit("-",$1->arr->name,$1->arr->name,"1");
         }                       
         | LEFTPAR type_name RIGHTPAR LEFTBRACE initializer_list RIGHTBRACE {}          
         | LEFTPAR type_name RIGHTPAR LEFTBRACE initializer_list COMMA RIGHTBRACE     {}                
@@ -178,11 +188,11 @@ unary_expression: postfix_expression  {
                 $$ = $1;
         }                                     
         | INCREMENT unary_expression {
-                emit("+", $2->loc->name,$2->loc->name,"1");
+                emit("+", $2->arr->name,$2->arr->name,"1");
                 $$ = $2;
         }                                       
         | DECREMENT unary_expression {
-                emit("-", $2->loc->name,$2->loc->name,"1");
+                emit("-", $2->arr->name,$2->arr->name,"1");
                 $$ = $2;
         }
         | unary_operator cast_expression {
@@ -421,7 +431,7 @@ AND_expression: equality_expression {
                         convertBool2Int($1);
                         convertBool2Int($3);
                         $$ = new expression();
-                        $$->type = "non_bool";
+                        $$->type = "not_bool";
                         $$->loc = symboltable::gentemp(new symboltype("int"),"");
                         emit("&", $$->loc->name, $1->loc->name, $3->loc->name);
                 }else{
@@ -438,7 +448,7 @@ exclusive_OR_expression: AND_expression {
                         convertBool2Int($1);
                         convertBool2Int($3);
                         $$ = new expression();
-                        $$->type = "non_bool";
+                        $$->type = "not_bool";
                         $$->loc = symboltable::gentemp(new symboltype("int"),"");
                         emit("^", $$->loc->name, $1->loc->name, $3->loc->name);
                 }else{
@@ -455,7 +465,7 @@ inclusive_OR_expression: exclusive_OR_expression  {
                         convertBool2Int($1);
                         convertBool2Int($3);
                         $$ = new expression();
-                        $$->type = "non_bool";
+                        $$->type = "not_bool";
                         $$->loc = symboltable::gentemp(new symboltype("int"),"");
                         emit("|", $$->loc->name, $1->loc->name, $3->loc->name);
                 }else{
@@ -472,6 +482,7 @@ logical_AND_expression: inclusive_OR_expression {
                 convertInt2Bool($4);
 
                 $$ = new expression();
+                $$->type = "bool";
                 backpatch($1->truelist, $3);
 
                 $$->truelist = $4->truelist;
@@ -487,6 +498,7 @@ logical_OR_expression: logical_AND_expression {
                 convertInt2Bool($4);
 
                 $$ = new expression();
+                 $$->type = "bool";
                 backpatch($1->falselist, $3);
 
                 $$->truelist = merge($1->truelist, $4->truelist);
@@ -504,7 +516,7 @@ conditional_expression: logical_OR_expression {
 
                 list<int> temp1 = makelist(nextinstr());
                 emit("goto", "", "", "");
-                backpatch($1->truelist, nextinstr());
+                backpatch($6->nextlist, nextinstr());
                 emit("=", $$->loc->name, $5->loc->name);
 
                 list<int> temp2 = makelist(nextinstr());
@@ -543,7 +555,7 @@ assignment_expression: conditional_expression {
                         emit("*=",$1->arr->name,$1->loc->name,$3->loc->name);
                 }else{
                         $3->loc = convertToSymbol($3->loc,$1->arr->type->type);
-                        emit("=", $1->loc->name, $3->loc->name);
+                        emit("=", $1->arr->name, $3->loc->name);
                 }
                 $$ = $3;
         }
@@ -841,7 +853,9 @@ statement: labeled_statement {}
         }
         ;
 
-loop_statement: labeled_statement{}
+loop_statement: labeled_statement{
+
+        }
         | expression_statement {
                 $$ = new statement();
                 $$->nextlist = $1->nextlist;
@@ -915,7 +929,7 @@ selection_statement: IF LEFTPAR expression  N RIGHTPAR M statement N  %prec LOWE
                 backpatch($3->truelist,$6);
 
                 list<int> temp = merge($3->falselist,$7->nextlist);
-                $$->nextlist = merge(temp,$8->nextlist);
+                $$->nextlist = merge($8->nextlist,temp);
         } 
         | IF LEFTPAR expression N RIGHTPAR M statement N ELSE M statement  %prec ELSE {
                 backpatch($4->nextlist,nextinstr());
@@ -942,7 +956,7 @@ iteration_statement: WHILE W LEFTPAR X change_table M expression RIGHTPAR M loop
 
                 $$->nextlist = $7->falselist;
 
-                emit("goto", "", "", int_to_string($6));
+                emit("goto", int_to_string($6));
 
                 blockName = "";
                 changeTable(currentST->parent);
@@ -957,7 +971,7 @@ iteration_statement: WHILE W LEFTPAR X change_table M expression RIGHTPAR M loop
 
                 $$->nextlist = $7->falselist;
 
-                emit("goto", "", "", int_to_string($6));
+                emit("goto", int_to_string($6));
 
                 blockName = "";
                 changeTable(currentST->parent);
@@ -1084,7 +1098,7 @@ change_table : %empty {
                 changeTable(currentSymbol->nestedtable);
                 emit("label",currentST->name,"","");
         }else{
-                changeTable(new symboltable());
+                changeTable(new symboltable(""));
         }
 }
 

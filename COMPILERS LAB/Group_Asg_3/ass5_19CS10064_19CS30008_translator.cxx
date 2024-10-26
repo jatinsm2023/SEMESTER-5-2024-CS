@@ -44,7 +44,6 @@ symbol* symbol::update(symboltype* t){
 // symboltable struct
 symboltable::symboltable(string name_){
     name = name_;
-    parent = NULL;
     tempCount = 0;
 }
 
@@ -58,15 +57,15 @@ symbol* symboltable::lookup(string name){
     }
 
     // if not found, search in parent symbol table
-    symbol* s;
-    if(parent != NULL){
-        s =  parent->lookup(name);
+    symbol* s = NULL;
+    if(this->parent != NULL){
+        s =  this->parent->lookup(name);
     }
     if(currentST == this && s == NULL){
         // if smbol is not found, create the symbol, add it to symbol table and return it
         symbol *temp = new symbol(name);
         allsymbols.push_back(*temp);
-        return &allsymbols.back();
+        return &(allsymbols.back());
     }
     else if(s!=NULL){
         // found in parent symbol table
@@ -88,7 +87,7 @@ symbol* symboltable::gentemp(symboltype* t,string initval){
 
     // add the symbol to symbol table
     currentST->allsymbols.push_back(*temp);
-    return &currentST->allsymbols.back();
+    return &(currentST->allsymbols.back());
 }
 
 // function to print symbol table
@@ -99,19 +98,19 @@ void symboltable::print(){
     cout<<endl;
     cout << "Symbol Table: " << setfill(' ') << left << setw(50) << this->name;
     cout << "Parent Table: " << setfill(' ') << left << setw(50) << ((this->parent != NULL) ? this->parent->name : "NULL") << endl;
-    for(int i = 0; i < 120; i++) {
+    for(int i = 0; i < 100; i++) {
         cout << '-';
     }
     cout << endl;
 
     cout << setfill(' ') << left << setw(20) << "Name";
-    cout << setfill(' ') << left << setw(20) << "Type";
-    cout << setfill(' ') << left << setw(20) << "Intial Value";
-    cout << setfill(' ') << left << setw(20) << "Size";
-    cout << setfill(' ') << left << setw(20) << "Offset";
-    cout << setfill(' ') << left << setw(20) << "Nested Table" << endl;
+    cout <<  left << setw(20) << "Type";
+    cout << left << setw(20) << "Intial Value";
+    cout <<  left << setw(20) << "Size";
+    cout <<  left << setw(20) << "Offset";
+    cout << left << setw(20) << "Nested Table" << endl;
 
-    for(int i = 0; i < 120; i++) {
+    for(int i = 0; i < 100; i++) {
         cout << '-';
     }
 
@@ -127,6 +126,14 @@ void symboltable::print(){
         cout<<left<<setw(15)<<it->size;
         cout<<left<<setw(15)<<it->offset;
         cout<<left;
+
+        if(it->nestedtable != NULL){
+            cout<<it->nestedtable->name<<endl;
+            tables.push_back(it->nestedtable);
+        }
+        else{
+            cout<<"NULL"<<endl;
+        }
     }
 
     for(int i = 0; i < 120; i++) {
@@ -146,8 +153,8 @@ void symboltable::update(){
     list<symboltable *> tables;
     int off_set;
     // update offset of symbols in symbol table
-     for(list<symbol>::iterator it = this->allsymbols.begin(); it !=  this->allsymbols.end(); it++) {
-        if(it == this->allsymbols.begin()) {
+     for(list<symbol>::iterator it = allsymbols.begin(); it !=  allsymbols.end(); it++) {
+        if(it == allsymbols.begin()) {
             it->offset = 0;
             off_set = it->size;
         }
@@ -237,15 +244,14 @@ void quadarray::print(){
     cout<<endl;
 
     int count = 0;
-    for(int i=0; i<quads.size(); i++, count++){
-        if (quads[i].op != "label")
-        {
-            cout << left << setw(4) << count << " : ";
-            quads[i].print();
+    for(vector<quad>:: iterator it = this->quads.begin();it!=this->quads.end();it++,count++){
+        if(it->op!="label"){
+            cout<<left<<setw(4)<<count<<":  ";
+            it->print();
         }
-        else{
+        else {
             cout<<endl<<left<<setw(4)<<count<<": ";
-            quads[i].print();
+            it->print();
         }
         cout<<endl;
     }
@@ -272,8 +278,7 @@ void emit(string op,string res,float arg1,string arg2){
 
 // function to create a new list with i as the first element
 list<int> makelist(int i){
-    list<int> temp;
-    temp.push_back(i);
+    list<int> temp(1,i);
     return temp;
 }
 
@@ -379,7 +384,7 @@ expression* convertInt2Bool(expression* e){
     if(e->type != "bool"){
         e->falselist = makelist(nextinstr());
         emit("==", "", e->loc->name, "0");
-        e->truelist = makelist(quadList.quads.size());
+        e->truelist = makelist(nextinstr());
         emit("goto", "");
     }
     return e;

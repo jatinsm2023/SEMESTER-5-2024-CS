@@ -24,6 +24,8 @@ floating_constant       ({fractional_constant}{exponent_part}?)|{digit_sequence}
 
 escape_sequence         \\(['"\\?abfnrtv])
 
+c_char                 [^'\\\n]|{escape_sequence}
+character_constant      \'({c_char}+)\'
 s_char                  [^"\\\n]|{escape_sequence}
 string_literal          \"({s_char}*)\"
 
@@ -131,7 +133,7 @@ space                   [ \t\n]
 {string_literal}            {yylval.charval =(yytext); return STRING_LITERAL;}
 {floating_constant}         {yylval.charval = (yytext); return FLO_CONSTANT;}
 {integer_constant}          {yylval.ival = atoi(yytext);return INT_CONSTANT;}
-
+{character_constant}        {yylval.charval = (yytext); return CHAR_CONSTANT;}
 {space}                     {}
 .                         {}
 
