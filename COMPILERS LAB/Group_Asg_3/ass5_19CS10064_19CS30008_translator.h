@@ -18,12 +18,12 @@ using namespace std;
 
 
 
-class symbol;  // entry of a symbol table
-class symboltype;  // type of entry in symbol table
-class symboltable; // symbol table
+struct symbol;  // entry of a symbol table
+struct symboltype;  // type of entry in symbol table
+struct symboltable; // symbol table
 
-class quad;    // entry of a quad array
-class quadarray;   // quad array
+struct quad;    // entry of a quad array
+struct quadarray;   // quad array
 
 
 // Global Variables
@@ -40,9 +40,9 @@ extern int yyparse();
 
 
 // To represent a symbol table entry type
-class symboltype
+struct symboltype
 {
-public:
+
     string type;      // Type of symbol      
     int width;          // Size of symbol ( array->size, otherwise 1 )
     symboltype* arrtype;     // for arrays, pointer to the type of the array element
@@ -52,8 +52,8 @@ public:
 
 
 // Stores a single symbol table entry
-class symbol{
-public:
+struct symbol{
+
     string name;   // Name of the symbol
     symboltype* type;  // Type of the symbol
     string value; // Value of the symbol
@@ -66,8 +66,8 @@ public:
 };
 
 // Stores a symbol table
-class symboltable{
-public:
+struct symboltable{
+
     string name; // Name of the symbol table
     list<symbol> allsymbols; // List of all symbols in the symbol table
     symboltable* parent;   // Pointer to the parent symbol table
@@ -82,8 +82,8 @@ public:
 };
 
 //To represent a quad entry
-class quad{
-public:
+struct quad{
+
     string op; // Operator
     string result; // Result
     string arg1; // Argument 1
@@ -98,16 +98,16 @@ public:
 };
 
 // entire quad array
-class quadarray{
-public:
+struct quadarray{
+
     vector<quad> quads; // Array of quads
 
     void print();
 };
 
 //To represent an array
-class arraytype{
-public:
+struct arraytype{
+
     string arrtype; // Type of array (arr,ptr)
     symbol* loc;    // Pointer to the symbol table entry of the array
     symbol* arr;    // Pointer to the symbol table entry of the array
@@ -115,14 +115,14 @@ public:
 };
 
 //To represent a statement
-class statement{
-public:
+struct statement{
+
     list<int> nextlist; // List of next statements
 };
 
 //To represent an expression
-class expression{
-public:
+struct expression{
+
     string type; // Type of the expression
     symbol* loc;  // Pointer to the symbol table entry of the expression
     list<int>truelist; // List of true statements
