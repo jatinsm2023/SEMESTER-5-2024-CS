@@ -1,6 +1,6 @@
 %{
        #include <bits/stdc++.h>
-      #include "ass5_19CS10064_19CS30008_translator.h"
+         #include "ass5_19CS10064_19CS30008_translator.h"
         using namespace std;
         extern int yylex();
         void yyerror(string s);
@@ -132,7 +132,7 @@ postfix_expression: primary_expression {
                 $$->arrtype = "arr";
 
                 if($1->arrtype=="arr"){
-                        symbol *temp = symboltable::gentemp(new symboltype("int"),"");
+                        symbol *temp = symboltable::gentemp(new symboltype("int"));
                         int sz = getSize($$->type);
                         emit("*",temp->name,$3->loc->name,int_to_string(sz));
                         emit("+",$$->loc->name,$1->loc->name,temp->name);
@@ -144,20 +144,20 @@ postfix_expression: primary_expression {
         }                     
         | postfix_expression LEFTPAR argument_expression_list_opt RIGHTPAR {
                 $$ = new arraytype();
-                $$->arr = symboltable::gentemp($1->type,"");
+                $$->arr = symboltable::gentemp($1->type);
                 emit("call", $$->arr->name,$1->arr->name,int_to_string($3));
         }             
         | postfix_expression DOT IDENTIFIER  {}                               
         | postfix_expression ARROW IDENTIFIER  {}                          
         | postfix_expression INCREMENT  {
                 $$ = new arraytype();
-                $$->arr = symboltable::gentemp($1->arr->type,"");
+                $$->arr = symboltable::gentemp($1->arr->type);
                 emit("=", $$->arr->name,$1->arr->name);
                 emit("+",$1->arr->name,$1->arr->name,"1");
         }                                    
         | postfix_expression DECREMENT {
                 $$ = new arraytype();
-                $$->arr = symboltable::gentemp($1->arr->type,"");
+                $$->arr = symboltable::gentemp($1->arr->type);
                 emit("=", $$->arr->name,$1->arr->name);
                 emit("-",$1->arr->name,$1->arr->name,"1");
         }                       
@@ -168,7 +168,7 @@ postfix_expression: primary_expression {
 argument_expression_list_opt: argument_expression_list {
                 $$ = $1;
         }
-        | %empty {
+        |  {
                 $$ = 0;
         }
         ;
@@ -199,13 +199,13 @@ unary_expression: postfix_expression  {
                 $$ = new arraytype();
                 switch($1){
                         case '&':
-                                $$->arr = symboltable::gentemp(new symboltype("ptr"), "");
+                                $$->arr = symboltable::gentemp(new symboltype("ptr"));
                                 $$->arr->type->arrtype = $2->arr->type;
                                 emit("= &", $$->arr->name, $2->arr->name);
                                 break;
                         case '*':
                                 $$->arrtype = "ptr";
-                                $$->loc = symboltable::gentemp($2->arr->type->arrtype,"");
+                                $$->loc = symboltable::gentemp($2->arr->type->arrtype);
                                 $$->arr = $2->arr;
 
                                 emit("= *", $$->loc->name, $2->arr->name);
@@ -214,15 +214,15 @@ unary_expression: postfix_expression  {
                                 $$ = $2;
                                 break;
                         case '-':
-                                $$->arr = symboltable::gentemp(new symboltype($2->arr->type->type), "");
+                                $$->arr = symboltable::gentemp(new symboltype($2->arr->type->type));
                                 emit("= -", $$->arr->name, $2->arr->name);
                                 break;
                         case '~':
-                                $$->arr = symboltable::gentemp(new symboltype($2->arr->type->type), "");
+                                $$->arr = symboltable::gentemp(new symboltype($2->arr->type->type));
                                 emit("= ~", $$->arr->name, $2->arr->name);
                                 break;
                         case '!':
-                                $$->arr = symboltable::gentemp(new symboltype($2->arr->type->type), "");
+                                $$->arr = symboltable::gentemp(new symboltype($2->arr->type->type));
                                 emit("= !", $$->arr->name, $2->arr->name);
                                 break;
                         default:
@@ -253,7 +253,7 @@ cast_expression: unary_expression {
 multiplicative_expression: cast_expression {
                 $$ = new expression();
                 if($1->arrtype == "arr"){
-                        $$->loc = symboltable::gentemp($1->loc->type,"");
+                        $$->loc = symboltable::gentemp($1->loc->type);
                         emit("=[]",$$->loc->name,$1->arr->name,$1->loc->name);
                 }
                 else if($1->arrtype == "ptr"){
@@ -266,7 +266,7 @@ multiplicative_expression: cast_expression {
         | multiplicative_expression MULTIPLY cast_expression {
                 if(typecheck($1->loc,$3->arr)){
                         $$ = new expression();
-                        $$->loc = symboltable::gentemp(new symboltype($1->loc->type->type),"");
+                        $$->loc = symboltable::gentemp(new symboltype($1->loc->type->type));
                         emit("*",$$->loc->name,$1->loc->name,$3->arr->name);
                 }else{
                         yyerror("Type mismatch");
@@ -275,7 +275,7 @@ multiplicative_expression: cast_expression {
         | multiplicative_expression DIV cast_expression {
                 if(typecheck($1->loc,$3->arr)){
                         $$ = new expression();
-                        $$->loc = symboltable::gentemp(new symboltype($1->loc->type->type),"");
+                        $$->loc = symboltable::gentemp(new symboltype($1->loc->type->type));
                         emit("/",$$->loc->name,$1->loc->name,$3->arr->name);
                 }else{
                         yyerror("Type mismatch");
@@ -284,7 +284,7 @@ multiplicative_expression: cast_expression {
         | multiplicative_expression MOD cast_expression  {
                 if(typecheck($1->loc,$3->arr)){
                         $$ = new expression();
-                        $$->loc = symboltable::gentemp(new symboltype($1->loc->type->type),"");
+                        $$->loc = symboltable::gentemp(new symboltype($1->loc->type->type));
                         emit("%",$$->loc->name,$1->loc->name,$3->arr->name);
                 }else{
                         yyerror("Type mismatch");
@@ -298,7 +298,7 @@ additive_expression: multiplicative_expression {
         | additive_expression PLUS multiplicative_expression {
                 if(typecheck($1->loc,$3->loc)){
                         $$ = new expression();
-                        $$->loc = symboltable::gentemp(new symboltype($1->loc->type->type),"");
+                        $$->loc = symboltable::gentemp(new symboltype($1->loc->type->type));
                         emit("+",$$->loc->name,$1->loc->name,$3->loc->name);
                 }else{
                         yyerror("Type mismatch");
@@ -307,7 +307,7 @@ additive_expression: multiplicative_expression {
         | additive_expression MINUS multiplicative_expression {
                 if(typecheck($1->loc,$3->loc)){
                         $$ = new expression();
-                        $$->loc = symboltable::gentemp(new symboltype($1->loc->type->type),"");
+                        $$->loc = symboltable::gentemp(new symboltype($1->loc->type->type));
                         emit("-",$$->loc->name,$1->loc->name,$3->loc->name);
                 }else{
                         yyerror("Type mismatch");
@@ -321,7 +321,7 @@ shift_expression: additive_expression {
         | shift_expression LEFTSHIFT additive_expression {
                 if($3->loc->type->type == "int"){
                         $$ = new expression();
-                        $$->loc = symboltable::gentemp(new symboltype("int"),"");
+                        $$->loc = symboltable::gentemp(new symboltype("int"));
                         emit("<<",$$->loc->name,$1->loc->name,$3->loc->name);
                 }else{
                         yyerror("Type mismatch");
@@ -348,7 +348,7 @@ relational_expression: shift_expression {
                         $$->truelist = makelist(nextinstr());
                         $$->falselist = makelist(nextinstr()+1);
                         emit("<", "", $1->loc->name, $3->loc->name);
-                        emit("goto", "", "", "");
+                        emit("goto", "");
                 }else{
                         yyerror("Type mismatch");
                 }
@@ -360,7 +360,7 @@ relational_expression: shift_expression {
                         $$->truelist = makelist(nextinstr());
                         $$->falselist = makelist(nextinstr()+1);
                         emit(">", "", $1->loc->name, $3->loc->name);
-                        emit("goto", "", "", "");
+                        emit("goto", "");
                 }else{
                         yyerror("Type mismatch");
                 }
@@ -372,7 +372,7 @@ relational_expression: shift_expression {
                         $$->truelist = makelist(nextinstr());
                         $$->falselist = makelist(nextinstr()+1);
                         emit("<=", "", $1->loc->name, $3->loc->name);
-                        emit("goto", "", "", "");
+                        emit("goto", "");
                 }else{
                         yyerror("Type mismatch");
                 }
@@ -384,7 +384,7 @@ relational_expression: shift_expression {
                         $$->truelist = makelist(nextinstr());
                         $$->falselist = makelist(nextinstr()+1);
                         emit(">=", "", $1->loc->name, $3->loc->name);
-                        emit("goto", "", "", "");
+                        emit("goto", "");
                 }else{
                         yyerror("Type mismatch");
                 }
@@ -403,7 +403,7 @@ equality_expression: relational_expression {
                         $$->truelist = makelist(nextinstr());
                         $$->falselist = makelist(nextinstr()+1);
                         emit("==", "", $1->loc->name, $3->loc->name);
-                        emit("goto", "", "", "");
+                        emit("goto", "");
                 }else{
                         yyerror("Type Error");
                 }
@@ -417,7 +417,7 @@ equality_expression: relational_expression {
                         $$->truelist = makelist(nextinstr());
                         $$->falselist = makelist(nextinstr()+1);
                         emit("!=", "", $1->loc->name, $3->loc->name);
-                        emit("goto", "", "", "");
+                        emit("goto", "");
                 }else{
                         yyerror("Type Error");
                 }
@@ -432,7 +432,7 @@ AND_expression: equality_expression {
                         convertBool2Int($3);
                         $$ = new expression();
                         $$->type = "not_bool";
-                        $$->loc = symboltable::gentemp(new symboltype("int"),"");
+                        $$->loc = symboltable::gentemp(new symboltype("int"));
                         emit("&", $$->loc->name, $1->loc->name, $3->loc->name);
                 }else{
                         yyerror("Type Error");
@@ -449,7 +449,7 @@ exclusive_OR_expression: AND_expression {
                         convertBool2Int($3);
                         $$ = new expression();
                         $$->type = "not_bool";
-                        $$->loc = symboltable::gentemp(new symboltype("int"),"");
+                        $$->loc = symboltable::gentemp(new symboltype("int"));
                         emit("^", $$->loc->name, $1->loc->name, $3->loc->name);
                 }else{
                         yyerror("Type Error");
@@ -466,7 +466,7 @@ inclusive_OR_expression: exclusive_OR_expression  {
                         convertBool2Int($3);
                         $$ = new expression();
                         $$->type = "not_bool";
-                        $$->loc = symboltable::gentemp(new symboltype("int"),"");
+                        $$->loc = symboltable::gentemp(new symboltype("int"));
                         emit("|", $$->loc->name, $1->loc->name, $3->loc->name);
                 }else{
                         yyerror("Type Error");
@@ -510,12 +510,12 @@ conditional_expression: logical_OR_expression {
                 $$ = $1;
         }       
         | logical_OR_expression N QUESTIONMARK M expression N COLON  M conditional_expression  {
-                $$->loc = symboltable::gentemp($5->loc->type,"");
+                $$->loc = symboltable::gentemp($5->loc->type);
                 $$->loc->update($5->loc->type);
                 emit("=", $$->loc->name, $9->loc->name);
 
                 list<int> temp1 = makelist(nextinstr());
-                emit("goto", "", "", "");
+                emit("goto", "");
                 backpatch($6->nextlist, nextinstr());
                 emit("=", $$->loc->name, $5->loc->name);
 
@@ -523,7 +523,7 @@ conditional_expression: logical_OR_expression {
 
                 temp1 = merge(temp1,temp2);
 
-                emit("goto", "", "", "");
+                emit("goto", "");
 
                 backpatch($2->nextlist, nextinstr());
                 convertInt2Bool($1);
@@ -533,15 +533,15 @@ conditional_expression: logical_OR_expression {
         }
         ;
 
-M:   %empty  {
+M:     {
                 $$ = nextinstr();
         }
         ;
 
-N:  %empty    {
+N:      {
                 $$ = new statement();
                 $$->nextlist = makelist(nextinstr());
-                emit("goto", "", "", "");
+                emit("goto", "");
         }
         ;       
 assignment_expression: conditional_expression {
@@ -552,7 +552,7 @@ assignment_expression: conditional_expression {
                         $3->loc = convertToSymbol($3->loc,$1->type->type);
                         emit("[]=",$1->arr->name,$1->loc->name,$3->loc->name);
                 }else if($1->arrtype == "ptr"){
-                        emit("*=",$1->arr->name,$1->loc->name,$3->loc->name);
+                        emit("*=",$1->arr->name,$3->loc->name);
                 }else{
                         $3->loc = convertToSymbol($3->loc,$1->arr->type->type);
                         emit("=", $1->arr->name, $3->loc->name);
@@ -655,7 +655,7 @@ specifier_qualifier_list:
 specifier_qualifier_list_opt: 
         specifier_qualifier_list
         {}
-        | %empty
+        | 
         { }
         ;
 
@@ -773,7 +773,7 @@ direct_declarator: IDENTIFIER {
 type_qualifier_list_opt: 
         type_qualifier_list
         {  }
-        | %empty
+        | 
         {  }
         ;
 
@@ -889,7 +889,7 @@ block_item_list_opt:
         {
             $$ = $1;    
         }
-        | %empty
+        | 
         {
             $$ = new statement();   
         }
@@ -1069,19 +1069,19 @@ iteration_statement: WHILE W LEFTPAR X change_table M expression RIGHTPAR M loop
         }
         ;
 
-F : %empty {
+F :  {
         blockName = "FOR";
 };
 
-W : %empty {
+W :  {
         blockName = "WHILE";
 };
 
-D : %empty {
+D :  {
         blockName = "DO_WHILE";
 };
 
-X: %empty {
+X:  {
         string newST = currentST->name + "." + blockName + "$" + int_to_string(STCount);
         STCount++;
         symbol *temp = currentST->lookup(newST);
@@ -1093,10 +1093,10 @@ X: %empty {
 }
 ;
 
-change_table : %empty {
+change_table :  {
         if(currentSymbol->nestedtable != NULL){
                 changeTable(currentSymbol->nestedtable);
-                emit("label",currentST->name,"","");
+                emit("label",currentST->name);
         }else{
                 changeTable(new symboltable(""));
         }
@@ -1143,7 +1143,7 @@ function_definition: declaration_specifiers declarator declaration_list_opt chan
 declaration_list_opt: 
         declaration_list
         {  }
-        | %empty
+        | 
         {  }
         ;
 declaration_list: declaration  {}

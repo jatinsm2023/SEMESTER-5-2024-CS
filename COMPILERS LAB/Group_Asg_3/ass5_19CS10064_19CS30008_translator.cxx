@@ -1,6 +1,7 @@
 #include "ass5_19CS10064_19CS30008_translator.h"
 #include<bits/stdc++.h>
 #include <iomanip>
+#include "lex.yy.c"
 using namespace std;
 
 
