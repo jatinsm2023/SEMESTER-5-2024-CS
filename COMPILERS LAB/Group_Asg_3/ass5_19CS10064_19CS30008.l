@@ -6,11 +6,7 @@
 %}
 
 %option yylineno
-%option noyywrap
 
-
-%x SINGLE_LINE_COMMENT
-%x MULTI_LINE_COMMENT
 
 Identifier              [_a-zA-Z][_a-zA-Z0-9]*
 
@@ -33,18 +29,12 @@ string_literal          \"({s_char}*)\"
 
 
 space                   [ \t\n]
-
+commentstart           "/*"
+commentend             "*/"
+commmentbody            [^*]|(\*[^/])
+comment                 {commentstart}{commmentbody}*{commentend}
+line_comment            "//"[^\n]*
 %%
-
-"//"                            { BEGIN(SINGLE_LINE_COMMENT); }
-<SINGLE_LINE_COMMENT>.          { /* eat up the comment */ }
-<SINGLE_LINE_COMMENT>\n         { BEGIN(INITIAL); }
-<SINGLE_LINE_COMMENT><<EOF>>    { BEGIN(INITIAL); }
-
-"/*"                            { BEGIN(MULTI_LINE_COMMENT); }
-<MULTI_LINE_COMMENT>"*/"        { BEGIN(INITIAL); }
-<MULTI_LINE_COMMENT>.           { /* eat up the comment */ }
-<MULTI_LINE_COMMENT>\n          { /* eat up the comment */ }
 
 
 
@@ -105,8 +95,8 @@ space                   [ \t\n]
 "^="                       {return XOREQUAL;}
 "|="                       {return OREQUAL;}
 "="                        {return EQUAL;}
-";"                       {return SEMICOLON;}
-","                       {return COMMA;}
+";"                        {return SEMICOLON;}
+","                        {return COMMA;}
 "+"                        {return PLUS;}
 "-"                        {return MINUS;}
 "*"                        {return MULTIPLY;}
@@ -136,7 +126,9 @@ space                   [ \t\n]
 {integer_constant}          {yylval.ival = atoi(yytext);return INT_CONSTANT;}
 {character_constant}        {yylval.charval = (yytext); return CHAR_CONSTANT;}
 {space}                     {}
-.                         {}
-
+.                           {}
+{comment}                   {}
+{line_comment}              {}
 %%
 
+int yywrap(void){return 1;}

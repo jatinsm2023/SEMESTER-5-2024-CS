@@ -93,14 +93,14 @@ symbol* symboltable::gentemp(symboltype* t,string initval){
 
 // function to print symbol table
 void symboltable::print(){
-   for(int i=0; i<100; i++){
-         cout<<"-";
+   for(int i=0; i<120; i++){
+         cout<<"~";
    }
     cout<<endl;
     cout << "Symbol Table: " << setfill(' ') << left << setw(50) << this->name;
     cout << "Parent Table: " << setfill(' ') << left << setw(50) << ((this->parent != NULL) ? this->parent->name : "NULL") << endl;
-    for(int i = 0; i < 100; i++) {
-        cout << '-';
+    for(int i = 0; i < 120; i++) {
+        cout << '~';
     }
     cout << endl;
 
@@ -111,8 +111,8 @@ void symboltable::print(){
     cout <<  left << setw(20) << "Offset";
     cout << left << setw(20) << "Nested Table" << endl;
 
-    for(int i = 0; i < 100; i++) {
-        cout << '-';
+    for(int i = 0; i < 120; i++) {
+        cout << '~';
     }
 
     cout << endl;
@@ -138,7 +138,7 @@ void symboltable::print(){
     }
 
     for(int i = 0; i < 120; i++) {
-        cout << '-';
+        cout << '~';
     }
 
     cout << endl<<endl;
@@ -234,13 +234,13 @@ void quad::print() {
 
 // print quad array
 void quadarray::print(){
-   for(int i=0; i<100; i++){
-         cout<<"-";
+   for(int i=0; i<120; i++){
+         cout<<"~";
    }
     cout<<endl;
     cout<<"Three Address Code"<<endl;
-    for(int i=0; i<100; i++){
-         cout<<"-";
+    for(int i=0; i<120; i++){
+         cout<<"~";
     }
     cout<<endl;
 

@@ -75,8 +75,8 @@
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN 
 %token ARROW INCREMENT DECREMENT LEFTSHIFT RIGHTSHIFT LESSEQUAL GREATEREQUAL DOUBLEEQUAL NOTEQUAL  DOUBLEAND DOUBLEOR PLUSEQUAL MINUSEQUAL MULTIPLYEQUAL DIVEQUAL MODEQUAL LEFTSHIFTEQUAL RIGHTSHIFTEQUAL ANDEQUAL OREQUAL XOREQUAL
 %token PLUS MINUS MULTIPLY DIV MOD TILDA NOT AND EQUAL SEMICOLON COMMA DOT LESS GREATER OR XOR
-%nonassoc LOWER_THAN_ELSE
-%nonassoc ELSE
+%right THEN ELSE
+
 %token LEFTPAR RIGHTPAR LEFTBRACE RIGHTBRACE LEFTBRACKET RIGHTBRACKET COLON QUESTIONMARK
 
 %%      
@@ -678,95 +678,93 @@ declarator: pointer direct_declarator {
         | direct_declarator  {}                                           
         ;
 
-direct_declarator: IDENTIFIER {
-                $$ = $1->update(new symboltype(lastType));
-                currentSymbol = $$;
+direct_declarator: 
+        IDENTIFIER
+        {
+            $$ = $1->update(new symboltype(lastType));   // For an identifier, update the type to lastType
+            currentSymbol = $$;                         // Update pointer to current symbol
         }
-        | LEFTPAR declarator RIGHTPAR {
-                $$ = $2;
+        | LEFTPAR declarator RIGHTPAR
+        {
+            $$ = $2;    // Simple assignment
         }
-        | direct_declarator LEFTBRACKET RIGHTBRACKET {
-                symboltype* t = $1->type;
-                symboltype *prev = NULL;
-
-                while(t->type == "arr"){
-                        prev = t;
-                        t = t->arrtype;
-                }
-
-                if(prev == NULL){
-                        symboltype *tp = new symboltype("arr", $1->type,0);
-                        $$ = $1->update(tp);
-                }else{
-                        prev->arrtype = new symboltype("arr", t,0);
-                        $$ = $1->update($1->type);
-                }
-
+        | direct_declarator LEFTBRACKET type_qualifier_list assignment_expression RIGHTBRACKET
+        { /* Ignored */ }
+        | direct_declarator LEFTBRACKET type_qualifier_list RIGHTBRACKET
+        { /* Ignored */ }
+        | direct_declarator LEFTBRACKET assignment_expression RIGHTBRACKET
+        {
+            symboltype* t = $1->type;
+            symboltype* prev = NULL;
+            // Keep moving recursively to get the base type
+            while(t->type == "arr") {
+                prev = t;
+                t = t->arrtype;
+            }
+            if(prev == NULL) {
+                int temp = atoi($3->loc->value.c_str());                // Get initial value
+                symboltype* tp = new symboltype("arr", $1->type, temp); // Create that type
+                $$ = $1->update(tp);     
+            }
+            else {
+                int temp = atoi($3->loc->value.c_str());                // Get initial value
+                prev->arrtype = new symboltype("arr", t, temp);         // Create that type
+                $$ = $1->update($1->type);                              // Update the symbol table for that symbol
+            }
         }
-        | direct_declarator LEFTBRACKET type_qualifier_list RIGHTBRACKET  {
-
+        | direct_declarator LEFTBRACKET RIGHTBRACKET
+        {
+            symboltype* t = $1->type;
+            symboltype* prev = NULL;
+            // Keep moving recursively to get the base type
+            while(t->type == "arr") {
+                prev = t;
+                t = t->arrtype;
+            }
+            if(prev == NULL) {
+                symboltype* tp = new symboltype("arr", $1->type, 0);
+                $$ = $1->update(tp);
+            }
+            else {
+                prev->arrtype = new symboltype("arr", t, 0);
+                $$ = $1->update($1->type);
+            }
         }
-        | direct_declarator LEFTBRACKET assignment_expression RIGHTBRACKET  {
-                symboltype* t = $1->type;
-                symboltype *prev = NULL;
-
-                while(t->type == "arr"){
-                        prev = t;
-                        t = t->arrtype;
-                }
-                if(prev == NULL){
-                        int temp = atoi($3->loc->value.c_str());
-                        symboltype *tp = new symboltype("arr", $1->type,temp);
-                        $$ = $1->update(tp);
-                }else{
-                        int temp = atoi($3->loc->value.c_str());
-                        symboltype *tp = new symboltype("arr", t,temp);
-                        $$ = $1->update($1->type);
-                }
+        | direct_declarator LEFTBRACKET STATIC type_qualifier_list assignment_expression RIGHTBRACKET
+        { /* Ignored */ }
+        | direct_declarator LEFTBRACKET STATIC assignment_expression RIGHTBRACKET
+        { /* Ignored */ }
+        | direct_declarator LEFTBRACKET type_qualifier_list STATIC assignment_expression RIGHTBRACKET
+        { /* Ignored */ }
+        | direct_declarator LEFTBRACKET type_qualifier_list MULTIPLY RIGHTBRACKET
+        { /* Ignored */ }
+        | direct_declarator LEFTBRACKET MULTIPLY RIGHTBRACKET
+        { /* Ignored */ }
+        | direct_declarator LEFTPAR change_table parameter_type_list RIGHTPAR
+        {
+            currentST->name = $1->name;
+            if($1->type->type != "void") {
+                symbol* s = currentST->lookup("return");    // Lookup for return value
+                s->update($1->type);
+            }
+            $1->nestedtable = currentST;
+            currentST->parent = globalST;   // Update parent symbol table
+            changeTable(globalST);          // Switch current table to point to the global symbol table
+            currentSymbol = $$;             // Update current symbol
         }
-        | direct_declarator LEFTBRACKET type_qualifier_list assignment_expression RIGHTBRACKET {
-
-        }
-        | direct_declarator LEFTBRACKET STATIC type_qualifier_list assignment_expression RIGHTBRACKET {
-
-        }
-        | direct_declarator LEFTBRACKET STATIC assignment_expression RIGHTBRACKET   {
-                
-        }
-        | direct_declarator LEFTBRACKET type_qualifier_list STATIC assignment_expression RIGHTBRACKET {
-
-        }
-        | direct_declarator LEFTBRACKET MULTIPLY RIGHTBRACKET {
-
-        }
-        | direct_declarator LEFTBRACKET type_qualifier_list MULTIPLY RIGHTBRACKET  {
-
-        }
-        | direct_declarator LEFTPAR change_table parameter_type_list RIGHTPAR  {
-                currentST->name = $1->name;
-                if($1->type->type != "void"){
-                        symbol *s = currentST->lookup("return");
-                        s->update($1->type);
-                }
-                $1->nestedtable = currentST;
-                currentST->parent  = globalST;
-                changeTable(globalST);
-                currentSymbol = $$;
-
-        }
-        | direct_declarator LEFTPAR identifier_list RIGHTPAR  {
-
-        }
-        | direct_declarator LEFTPAR change_table RIGHTPAR {
-                currentST->name = $1->name;
-                if($1->type->type != "void"){
-                        symbol *s = currentST->lookup("return");
-                        s->update($1->type);
-                }
-                $1->nestedtable = currentST;
-                currentST->parent  = globalST;
-                changeTable(globalST);
-                currentSymbol = $$;
+        | direct_declarator LEFTPAR identifier_list RIGHTPAR
+        { /* Ignored */ }
+        | direct_declarator LEFTPAR change_table RIGHTPAR
+        {
+            currentST->name = $1->name;
+            if($1->type->type != "void") {
+                symbol* s = currentST->lookup("return");    // Lookup for return value
+                s->update($1->type);
+            }
+            $1->nestedtable = currentST;
+            currentST->parent = globalST;   // Update parent symbol table
+            changeTable(globalST);          // Switch current table to point to the global symbol table
+            currentSymbol = $$;             // Update current symbol
         }
         ;
 
@@ -834,7 +832,9 @@ designator: LEFTBRACKET constant_expression RIGHTBRACKET  {}
 
 
 /* Statements */
-statement: labeled_statement {}
+statement: labeled_statement {
+
+        }
         | compound_statement { 
                 $$ = $1;
         }
@@ -854,7 +854,7 @@ statement: labeled_statement {}
         ;
 
 loop_statement: labeled_statement{
-
+                
         }
         | expression_statement {
                 $$ = new statement();
@@ -920,7 +920,7 @@ expression_statement: SEMICOLON {
         }
         ;
 
-selection_statement: IF LEFTPAR expression  N RIGHTPAR M statement N  %prec LOWER_THAN_ELSE  {
+selection_statement: IF LEFTPAR expression  N RIGHTPAR M statement N  %prec THEN {
                 backpatch($4->nextlist,nextinstr());
 
                 convertInt2Bool($3);
@@ -931,7 +931,7 @@ selection_statement: IF LEFTPAR expression  N RIGHTPAR M statement N  %prec LOWE
                 list<int> temp = merge($3->falselist,$7->nextlist);
                 $$->nextlist = merge($8->nextlist,temp);
         } 
-        | IF LEFTPAR expression N RIGHTPAR M statement N ELSE M statement  %prec ELSE {
+        | IF LEFTPAR expression N RIGHTPAR M statement N ELSE M statement   {
                 backpatch($4->nextlist,nextinstr());
 
                 convertInt2Bool($3);
