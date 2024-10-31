@@ -1,2 +1,2 @@
-iverilog tes.v
+iverilog Ham.v
 ./a.out

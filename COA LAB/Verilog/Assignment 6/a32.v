@@ -24,3 +24,5 @@ module a32(
     a8 a4(a[31:24], out[31:24]);
 
 endmodule
+
+// return out = a

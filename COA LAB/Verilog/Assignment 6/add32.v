@@ -10,9 +10,9 @@ module add1(
     wire w1,w2,w3,w4;
     and A1(w1,a,b);
     and A2(w2,a,cin);
-    and A3(w3,b,cin);
-    or X1(cout,w1,w2,w3);
-    xor X2(sum,a,b,cin);
+    and A3(w3,b,cin); 
+    or X1(cout,w1,w2,w3); // cout = a.b + a.cin + b.cin
+    xor X2(sum,a,b,cin); // sum = a^b^cin
     
 endmodule
     

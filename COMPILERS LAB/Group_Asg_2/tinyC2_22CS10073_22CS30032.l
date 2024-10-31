@@ -66,10 +66,10 @@ line_comment            "//"[^\n]*
 "do"                       {return DO;}
 "for"                      {return FOR;}
 
-"sizeof"                    {return SIZEOF;}  
-"++"                        {return INCREMENT;}
-"--"                        {return DECREMENT;}
-"->"                        {return ARROW;}
+"sizeof"                   {return SIZEOF;}  
+"++"                       {return INCREMENT;}
+"--"                       {return DECREMENT;}
+"->"                       {return ARROW;}
 "<<"                       {return LEFTSHIFT;}
 ">>"                       {return RIGHTSHIFT;}
 "<="                       {return LESSEQUAL;}
@@ -89,8 +89,8 @@ line_comment            "//"[^\n]*
 "^="                       {return XOREQUAL;}
 "|="                       {return OREQUAL;}
 "="                        {return EQUAL;}
-";"                       {return SEMICOLON;}
-","                       {return COMMA;}
+";"                        {return SEMICOLON;}
+","                        {return COMMA;}
 "+"                        {return PLUS;}
 "-"                        {return MINUS;}
 "*"                        {return MULTIPLY;}

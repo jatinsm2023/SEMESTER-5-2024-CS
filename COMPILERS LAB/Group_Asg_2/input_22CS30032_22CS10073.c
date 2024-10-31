@@ -1,115 +1,50 @@
+// Arrays (multidimensional), loops and nested loops
 
-// Test 1: Expressions (Primary, Postfix, Unary, Binary, and Assignment)
-void test_expressions() {
-    int a = 10;
-    int b = 5;
-    int c;
-    
-    c = a + b; // Addition
-    c = a * b; // Multiplication
-    c = (a + b) * (a - b); // Compound Expression
+int N = 4;
 
-    a++; // Postfix increment
-    b--; // Postfix decrement
-    c = -a; // Unary minus
-    c = ~b; // Unary bitwise NOT
-    c = a & b; // Bitwise AND
-    c = a | b; // Bitwise OR
-    c = a << 1; // Shift left
-    c = a >> 1; // Shift right
-    c = a == b; // Equality
-    c = (a > b) ? a : b; // Conditional Expression
+void getCF (int mat[N][N], int temp[N][N], int p, int q, int n) {
+    int i = 0, j = 0, row = 0, col = 0;
+ 
+    for (row = 0; row < n; row++) {                       // nested for loop
+        for (col = 0; col < n; col++) {
+            if (row != p && col != q) {
+                temp[i][j++] = mat[row][col];
+            }
+            if (j == n - 1) {
+                j = 0;
+                i++;
+            }
+        }
+    }
+    return;
 }
 
-// Test 2: Declarations (including complex initializers, pointer, array)
-void test_declarations() {
-    int x = 10;
-    float y = 3.14;
-    int arr[5] = {1, 2, 3, 4, 5}; // Array declaration
-    int *ptr = &x; // Pointer declaration
-
-    const int z = 100; // Constant declaration
-    extern int global_var; // External declaration
-}
-
-
-// Test 3: Statements (if, switch, compound statements)
-void test_statements() {
-    int x = 10;
-    
-    // If-else statement
-    if (x > 5) {
-        x++;
-    } else {
-        x--;
-    }
-
-    // Switch-case statement
-    switch (x) {
-        case 5:
-            x += 5;
-            break;
-        case 10:
-            x += 10;
-            break;
-        default:
-            x += 1;
-    }
-
-    // Compound statement
-    {
-        int y = 20;
-        x += y;
-    }
-}
-
-// Test 4: Loops (while, do-while, for)
-void test_loops() {
+int main() {
+    int p[5];                                   // 1D integer array
     int i = 0;
 
-    // While loop
-    while (i < 5) {
-        i++;
+    while (i < 5) {                             // while loop
+        p[i++] = i; 
     }
 
-    // Do-while loop
-    do {
-        i--;
-    } while (i > 0);
+    int sum = 0, n = 5;
+    i = 0;
+    do {                                        // do-while loop
+        sum = sum + p[i++];
+    } while (i < n);
 
-    // For loop
-    for (int j = 0; j < 5; j++) {
-        i += j;
+    int mat[N][N];
+
+    int x = 0, y = 0, val = 20;
+
+    for (x = 0; x < N; x++) {
+        for (y = 0; y < N; y++) {
+            mat[x][y] = val++;
+        }
     }
+
+    int cofactor[N][N];
+    getCF(mat, cofactor, 0, 0, N);
+
+    return 0;
 }
-
-// Test 5: Function Definitions and Calls
-int add(int a, int b) {
-    return a + b;
-}
-
-void test_functions() {
-    int x = add(10, 20); // Function call
-}
-
-// Test 6: Pointer Arithmetic and Dereferencing
-void test_pointers() {
-    int arr[3] = {1, 2, 3};
-    int *p = arr;
-    
-    int x = *p; // Dereference
-    p++; // Pointer arithmetic
-    x = *(p + 1); // Accessing next element
-}
-
-// Test 7: Arrays (accessing elements, modifying)
-void test_arrays() {
-    int arr[5] = {1, 2, 3, 4, 5};
-    
-    for (int i = 0; i < 5; i++) {
-        arr[i] += i;
-    }
-}
-
-
-
