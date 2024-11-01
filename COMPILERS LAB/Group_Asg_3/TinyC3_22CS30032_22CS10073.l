@@ -1,6 +1,6 @@
 %{
     #include <stdio.h>
-    #include "ass5_19CS10064_19CS30008_translator.h"
+    #include "TinyC3_22CS30032_22CS10073_translator.h"
     #include "y.tab.h"
     #include "y.tab.c"
 %}

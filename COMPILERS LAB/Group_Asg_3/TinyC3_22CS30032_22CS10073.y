@@ -1,6 +1,6 @@
 %{
        #include <bits/stdc++.h>
-         #include "ass5_19CS10064_19CS30008_translator.h"
+         #include "TinyC3_22CS30032_22CS10073_translator.h"
         using namespace std;
         extern int yylex();
         void yyerror(string s);

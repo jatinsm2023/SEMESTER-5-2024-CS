@@ -1,4 +1,4 @@
-#include "ass5_19CS10064_19CS30008_translator.h"
+#include "TinyC3_22CS30032_22CS10073_translator.h"
 #include<bits/stdc++.h>
 #include "lex.yy.c"
 using namespace std;
