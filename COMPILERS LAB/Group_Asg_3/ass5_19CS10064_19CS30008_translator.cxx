@@ -1,6 +1,5 @@
 #include "ass5_19CS10064_19CS30008_translator.h"
 #include<bits/stdc++.h>
-#include <iomanip>
 #include "lex.yy.c"
 using namespace std;
 
@@ -94,25 +93,25 @@ symbol* symboltable::gentemp(symboltype* t,string initval){
 // function to print symbol table
 void symboltable::print(){
    for(int i=0; i<120; i++){
-         cout<<"~";
+         cout<<"-";
    }
     cout<<endl;
-    cout << "Symbol Table: " << setfill(' ') << left << setw(50) << this->name;
-    cout << "Parent Table: " << setfill(' ') << left << setw(50) << ((this->parent != NULL) ? this->parent->name : "NULL") << endl;
+    cout << "Symbol Table: " << this->name;
+    cout << "Parent Table: " << ((this->parent != NULL) ? this->parent->name : "NULL") << endl;
     for(int i = 0; i < 120; i++) {
-        cout << '~';
+        cout << '-';
     }
     cout << endl;
 
-    cout << setfill(' ') << left << setw(20) << "Name";
-    cout <<  left << setw(20) << "Type";
-    cout << left << setw(20) << "Intial Value";
-    cout <<  left << setw(20) << "Size";
-    cout <<  left << setw(20) << "Offset";
-    cout << left << setw(20) << "Nested Table" << endl;
+    cout << "Name"<<"\t\t\t\t\t\t";
+    cout << "Type"<<"\t\t\t\t\t\t";
+    cout << "Intial Value"<<"\t\t\t\t\t\t";
+    cout <<  "Size"<<"\t\t\t\t\t\t";
+    cout <<  "Offset"<<"\t\t\t\t\t\t";
+    cout << "Nested Table" << endl;
 
     for(int i = 0; i < 120; i++) {
-        cout << '~';
+        cout << '-';
     }
 
     cout << endl;
@@ -121,12 +120,11 @@ void symboltable::print(){
 
     // print all symbols in symbol table
     for(list<symbol>::iterator it = this->allsymbols.begin(); it!=this->allsymbols.end(); it++){
-        cout<<left<<setw(25)<<it->name;
-        cout<<left<<setw(25)<<checktype(it->type);
-        cout<<left<<setw(20)<<(it->value != "" ? it->value : "-");
-        cout<<left<<setw(15)<<it->size;
-        cout<<left<<setw(15)<<it->offset;
-        cout<<left;
+        cout<<it->name<<"\t\t\t\t\t\t";
+        cout<<checktype(it->type)<<"\t\t\t\t\t\t";
+        cout<<(it->value != "" ? it->value : "-")<<"\t\t\t\t\t\t";
+        cout<<it->size<<"\t\t\t\t\t\t";
+        cout<<it->offset<<"\t\t\t\t\t\t";
 
         if(it->nestedtable != NULL){
             cout<<it->nestedtable->name<<endl;
@@ -138,7 +136,7 @@ void symboltable::print(){
     }
 
     for(int i = 0; i < 120; i++) {
-        cout << '~';
+        cout << '-';
     }
 
     cout << endl<<endl;
@@ -235,23 +233,23 @@ void quad::print() {
 // print quad array
 void quadarray::print(){
    for(int i=0; i<120; i++){
-         cout<<"~";
+         cout<<"-";
    }
     cout<<endl;
-    cout<<"Three Address Code"<<endl;
+    cout<<"Three Address Code ( TAC )"<<endl;
     for(int i=0; i<120; i++){
-         cout<<"~";
+         cout<<"-";
     }
     cout<<endl;
 
     int count = 0;
     for(vector<quad>:: iterator it = this->quads.begin();it!=this->quads.end();it++,count++){
         if(it->op!="label"){
-            cout<<left<<setw(4)<<count<<":  ";
+            cout<<count<<":  ";
             it->print();
         }
         else {
-            cout<<endl<<left<<setw(4)<<count<<": ";
+            cout<<endl<<count<<": ";
             it->print();
         }
         cout<<endl;
