@@ -1,24 +1,24 @@
 // Nested if else and recursive functions  
 
-int fact (int n) {                               // recursive functions
-    if (n == 0) 
+int factorial(int num) {                               // recursive function
+    if (num == 0) 
         return 1; 
-    return n * fact(n-1); 
+    return num * factorial(num - 1); 
 } 
 
 int main() {  
-    int n;
-    n = -5;
+    int value;
+    value = -5;
 
-    if (n > 10) {
-        n = 10;
+    if (value > 10) {
+        value = 10;
     } else {
-        if (n < 0) {                            // nested if-else
-            n = 0;
+        if (value < 0) {                            // nested if-else
+            value = 0;
         } else {
-            n = 5;
+            value = 5;
         }
     }
-    int fact_n = fact(n); 
+    int result = factorial(value); 
     return 0;  
 }

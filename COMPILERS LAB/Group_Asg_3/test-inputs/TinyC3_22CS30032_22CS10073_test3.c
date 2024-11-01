@@ -1,18 +1,18 @@
 // Arrays (multidimensional), loops and nested loops
 
-int N = 4;
+int SIZE = 4;
 
-void getCF (int mat[N][N], int temp[N][N], int p, int q, int n) {
-    int i = 0, j = 0, row = 0, col = 0;
+void calculateCofactor(int matrix[SIZE][SIZE], int tempMatrix[SIZE][SIZE], int excludeRow, int excludeCol, int dim) {
+    int tempRow = 0, tempCol = 0, i = 0, j = 0;
  
-    for (row = 0; row < n; row++) {                       // nested for loop
-        for (col = 0; col < n; col++) {
-            if (row != p && col != q) {
-                temp[i][j++] = mat[row][col];
+    for (i = 0; i < dim; i++) {                         // nested for loop
+        for (j = 0; j < dim; j++) {
+            if (i != excludeRow && j != excludeCol) {
+                tempMatrix[tempRow][tempCol++] = matrix[i][j];
             }
-            if (j == n - 1) {
-                j = 0;
-                i++;
+            if (tempCol == dim - 1) {
+                tempCol = 0;
+                tempRow++;
             }
         }
     }
@@ -20,31 +20,30 @@ void getCF (int mat[N][N], int temp[N][N], int p, int q, int n) {
 }
 
 int main() {
-    int p[5];                                   // 1D integer array
-    int i = 0;
+    int array1D[5];                                    // 1D integer array
+    int idx = 0;
 
-    while (i < 5) {                             // while loop
-        p[i++] = i; 
+    while (idx < 5) {                                  // while loop
+        array1D[idx++] = idx; 
     }
 
-    int sum = 0, n = 5;
-    i = 0;
-    do {                                        // do-while loop
-        sum = sum + p[i++];
-    } while (i < n);
+    int totalSum = 0, len = 5;
+    idx = 0;
+    do {                                               // do-while loop
+        totalSum += array1D[idx++];
+    } while (idx < len);
 
-    int mat[N][N];
+    int matrix2D[SIZE][SIZE];
+    int row = 0, col = 0, initialValue = 20;
 
-    int x = 0, y = 0, val = 20;
-
-    for (x = 0; x < N; x++) {
-        for (y = 0; y < N; y++) {
-            mat[x][y] = val++;
+    for (row = 0; row < SIZE; row++) {
+        for (col = 0; col < SIZE; col++) {
+            matrix2D[row][col] = initialValue++;
         }
     }
 
-    int cofactor[N][N];
-    getCF(mat, cofactor, 0, 0, N);
+    int cofactorMatrix[SIZE][SIZE];
+    calculateCofactor(matrix2D, cofactorMatrix, 0, 0, SIZE);
 
     return 0;
 }

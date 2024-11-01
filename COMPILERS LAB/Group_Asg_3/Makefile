@@ -10,4 +10,4 @@ all:
 	./a.out < test-inputs/TinyC3_22CS30032_22CS10073_test6.c > test-outputs/TinyC3_22CS30032_22CS10073_quads6.out
 
 clean:
-	rm -f lex.yy.c *.tab.c *.tab.h *.output *.o a.out *.gch test-outputs/*_quads*.out
+	rm -f lex.yy.c *.tab.c *.tab.h *.output *.o a.out *.gch test-outputs/*.out
