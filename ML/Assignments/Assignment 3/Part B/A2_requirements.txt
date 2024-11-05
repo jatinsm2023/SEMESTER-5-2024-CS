@@ -1,0 +1,18 @@
+Data Handling and Manipulation
+
+    pandas
+    numpy
+
+Data Visualization
+
+    matplotlib.pyplot
+    seaborn
+
+
+Machine Learning and Clustering
+
+    sklearn.preprocessing: StandardScaler, LabelEncoder
+    sklearn.decomposition: PCA
+    sklearn.cluster: KMeans, AgglomerativeClustering, DBSCAN
+    sklearn.metrics: silhouette_score, davies_bouldin_score, calinski_harabasz_score
+    sklearn.model_selection: train_test_split

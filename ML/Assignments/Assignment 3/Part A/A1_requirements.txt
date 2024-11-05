@@ -1,0 +1,21 @@
+Data Handling and Manipulation
+    pandas
+    numpy
+
+Machine Learning and Model Building
+
+    sklearn:
+    train_test_split, StandardScaler, accuracy_score, f1_score, roc_auc_score, plot_roc_curve, plot_confusion_matrix, confusion_matrix, KNeighborsClassifier
+    scipy.stats for statistical tests (e.g., t, t_critical, stats.ttest_ind)
+    imbalanced_learn (as imblearn):
+    SMOTE
+
+
+Data Visualization
+
+    matplotlib.pyplot for plotting (e.g., histograms, ROC curves, confusion matrices)
+    seaborn for enhanced statistical data visualization (e.g., sns.countplot)
+
+
+Utility Libraries
+    warnings to manage warnings in the notebook
