@@ -312,18 +312,17 @@ bool typecheck(symbol* &s1,symbol* &s2){
     }
 }
 
-bool typecheck(symboltype* t1,symboltype* t2){
-    if(t1==NULL || t2==NULL){
+bool typecheck(symboltype* t1, symboltype* t2) {
+    if(t1 == NULL && t2 == NULL)
+        return true;
+    else if(t1 == NULL || t2 == NULL)
         return false;
-    }
-    if(t1->type != t2->type){
+    else if(t1->type != t2->type)
         return false;
-    }
-    if(t1->type != t2->type){
-        return false;
-    }
-    return typecheck(t1->arrtype,t2->arrtype);
+
+    return typecheck(t1->arrtype, t2->arrtype);
 }
+
 
 symbol* convertToSymbol(symbol* s,string t){
     symbol *temp = symboltable::gentemp(new symboltype(t));

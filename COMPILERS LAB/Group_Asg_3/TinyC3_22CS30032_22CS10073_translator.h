@@ -109,20 +109,18 @@ struct quadarray{
 struct arraytype{
 
     string arrtype; // Type of array (arr,ptr)
-    symbol* loc;    // Pointer to the symbol table entry of the array
+    symbol* loc;    // Pointer to Location to compute address of the array
     symbol* arr;    // Pointer to the symbol table entry of the array
     symboltype* type;   // Type of the array, for multidimensional arrays
 };
 
 //To represent a statement
 struct statement{
-
     list<int> nextlist; // List of next statements
 };
 
 //To represent an expression
 struct expression{
-
     string type; // Type of the expression
     symbol* loc;  // Pointer to the symbol table entry of the expression
     list<int>truelist; // List of true statements
