@@ -107,7 +107,6 @@ struct quadarray{
 
 //To represent an array
 struct arraytype{
-
     string arrtype; // Type of array (arr,ptr)
     symbol* loc;    // Pointer to Location to compute address of the array
     symbol* arr;    // Pointer to the symbol table entry of the array

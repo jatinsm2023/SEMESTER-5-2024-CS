@@ -19,6 +19,9 @@ int main () {
     int value2 = 17;
     char char1 = 'c', char2 = 'a'; // character definitions
 
+    if(value1>0){
+        value1 = 1;
+    }
     // Arithmetic Operations
     var1 = value1 + value2;
     var2 = value1 - value2;

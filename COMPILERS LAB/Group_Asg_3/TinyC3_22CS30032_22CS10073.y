@@ -153,7 +153,7 @@ postfix_expression: primary_expression {
                 $$->arrtype = "arr";
 
                 if($1->arrtype=="arr"){
-                        //ulti-dimentional arrays
+                        //multi-dimentional arrays
                         symbol *temp = symboltable::gentemp(new symboltype("int"));     
                         int sz = getSize($$->type);
                         emit("*",temp->name,$3->loc->name,int_to_string(sz));
@@ -1257,8 +1257,7 @@ function_definition: declaration_specifiers declarator declaration_list_opt chan
                 changeTable(globalST);
         }
         ;
-
-
+        
 declaration_list_opt: 
         declaration_list
         {  }

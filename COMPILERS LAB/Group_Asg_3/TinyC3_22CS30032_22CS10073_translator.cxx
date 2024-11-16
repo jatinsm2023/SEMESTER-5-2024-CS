@@ -390,7 +390,7 @@ expression* convertInt2Bool(expression* e){
 
 // bool to int conversion
 expression* convertBool2Int(expression* e){
-    if(e->type != "bool"){
+    if(e->type == "bool"){
         e->loc = symboltable::gentemp(new symboltype("int"));
         backpatch(e->truelist, nextinstr());
         emit("=", e->loc->name, "true");
